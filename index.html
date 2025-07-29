@@ -1,1 +1,698 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stando Setup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            background-image: url('https://cdn.discordapp.com/attachments/1381721708851105918/1399385178186448976/7b1edc9b51d44b6748995b0949a7055e.gif?ex=6888ce81&is=68877d01&hm=529e65415b55ae1c8c9761b3c2abd5169a853a716d42276dfcb77878d2736c69&');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            box-sizing: border-box;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            zoom: 0.9; /* Max zoom level */
+            -moz-transform: scale(0.9); /* Firefox */
+            -moz-transform-origin: top left;
+        }
+        .container {
+            background-color: rgba(18, 18, 18, 0.95);
+            padding: 2.25rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.4), 0 6px 12px -3px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(60, 60, 60, 0.5);
+        }
+        .discord-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-top: 0.4rem;
+            margin-bottom: 1.5rem;
+            color: #909090;
+            text-align: center;
+        }
+        .input-field, .select-field {
+            background-color: #2a2a2a;
+            border: 1px solid #444444;
+            color: #e0e0e0;
+            padding: 0.75rem 1rem;
+            border-radius: 0.6rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+            text-align: center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23e0e0e0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            background-size: 1.2rem;
+            padding-right: 2.5rem;
+        }
+        .input-field:hover, .select-field:hover {
+            border-color: #6a6a6a;
+            box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
+        }
+        .input-field:focus, .select-field:focus {
+            outline: none;
+            border-color: #5b9bff;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
+            background-color: #3a3a3a;
+        }
+        .generate-button {
+            background-color: #4299e1;
+            color: white;
+            padding: 0.85rem 1.75rem;
+            border-radius: 0.6rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+            border: none;
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.25), 0 3px 6px -1px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .generate-button:hover:not(:disabled) {
+            background-color: #3182ce;
+            transform: translateY(-2px);
+            box-shadow: 0 9px 15px -4px rgba(0, 0, 0, 0.35), 0 4px 8px -2px rgba(0, 0, 0, 0.2);
+        }
+        .generate-button:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .generate-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: none;
+            box-shadow: none;
+        }
+        .code-output {
+            background-color: #0a0a0a;
+            border: 1px solid #333333;
+            color: #a0aec0;
+            padding: 1.25rem;
+            border-radius: 0.8rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            min-height: 220px;
+            resize: vertical;
+            overflow-y: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode {
+            background-color: #f0f2f5;
+            background-image: none;
+            color: #333333;
+        }
+        body.light-mode .container {
+            background-color: #ffffff;
+            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.1), 0 6px 12px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(220, 220, 220, 0.8);
+        }
+        body.light-mode .discord-text {
+            color: #666666;
+        }
+        body.light-mode .input-field, body.light-mode .select-field {
+            background-color: #f8f8f8;
+            border-color: #d0d0d0;
+            color: #333333;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        body.light-mode .input-field:hover, body.light-mode .select-field:hover {
+            border-color: #a0a0a0;
+            box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
+        }
+        body.light-mode .input-field:focus, body.light-mode .select-field:focus {
+            border-color: #5b9bff;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
+            background-color: #ffffff;
+        }
+        body.light-mode .generate-button {
+            background-color: #4299e1;
+            color: white;
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 3px 6px -1px rgba(0, 0, 0, 0.06);
+        }
+        body.light-mode .generate-button:hover:not(:disabled) {
+            background-color: #3182ce;
+        }
+        body.light-mode .code-output {
+            background-color: #f8f8f8;
+            border-color: #d0d0d0;
+            color: #444444;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.6rem;
+            color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+        body.light-mode .theme-toggle {
+            color: #333333;
+        }
+        .code-output-container {
+            position: relative;
+            width: 100%;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background-color: #4299e1;
+            color: white;
+            padding: 0.35rem 0.9rem;
+            border-radius: 0.45rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            z-index: 10;
+        }
+        .copy-button:hover {
+            background-color: #3182ce;
+            transform: translateY(-1px);
+        }
+        .copy-button:active {
+            transform: translateY(0);
+        }
+        .settings-category {
+            background-color: rgba(35, 35, 35, 0.8);
+            border-radius: 0.9rem;
+            margin-bottom: 1.2rem;
+            overflow: hidden;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 1px solid rgba(60, 60, 60, 0.5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        body.light-mode .settings-category {
+            background-color: #fcfcfc;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.4rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.15rem;
+            border-bottom: 1px solid rgba(60, 60, 60, 0.5);
+            transition: background-color 0.25s ease, border-color 0.3s ease;
+            color: #f0f0f0;
+        }
+        body.light-mode .category-header {
+            border-color: #e0e0e0;
+            color: #333333;
+        }
+        .category-header:hover {
+            background-color: rgba(66, 153, 225, 0.1);
+        }
+        .category-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            padding: 1.2rem 1.4rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-out, padding 0.6s ease-out;
+        }
+        .category-content.expanded {
+            max-height: 1500px;
+            padding: 1.2rem 1.4rem;
+        }
+        @media (min-width: 640px) {
+            .category-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .setting-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.1rem;
+            color: #c0c0c0;
+        }
+        body.light-mode .setting-label {
+            color: #555555;
+        }
+        .arrow-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.1rem;
+        }
+        .arrow-icon.rotated {
+            transform: rotate(90deg);
+        }
+        .audio-controls {
+            position: absolute;
+            bottom: 1.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background-color: rgba(18, 18, 18, 0.8);
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        body.light-mode .audio-controls {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .audio-controls button {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        body.light-mode .audio-controls button {
+            color: #333333;
+        }
+        .audio-controls button:hover {
+            color: #5b9bff;
+        }
+        .audio-controls span {
+            font-size: 0.75rem;
+            color: #b0b0b0;
+        }
+        body.light-mode .audio-controls span {
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container flex flex-col items-center space-y-6">
+        <button id="themeToggle" class="theme-toggle">
+            ☀️
+        </button>
+
+        <h1 class="text-3xl font-extrabold text-center mb-0 leading-tight">Stando Setup</h1>
+        <p class="discord-text">
+            Join discord.gg/stando for commands and support with the script. | made by phowg/hayden
+        </p>
+
+        <div class="w-full">
+            <label for="usernameInput" class="block text-sm font-medium mb-2 text-center">Owner's Username:</label>
+            <input
+                type="text"
+                id="usernameInput"
+                placeholder="..."
+                class="input-field"
+            />
+        </div>
+
+        <h2 class="text-2xl font-bold text-center mt-6 mb-4">Config</h2>
+        <div id="settingsContainer" class="w-full">
+            
+        </div>
+
+        <button id="generateButton" class="generate-button w-full md:w-auto">
+            Generate Code
+        </button>
+
+        <div class="w-full code-output-container">
+            <label for="codeOutput" class="block text-sm font-medium mb-2">Generated Code:</label>
+            <textarea
+                id="codeOutput"
+                readonly
+                class="code-output w-full"
+                rows="15"
+                placeholder="script..."
+            ></textarea>
+            <button id="copyButton" class="copy-button">Copy</button>
+        </div>
+
+        <div class="audio-controls">
+            <audio id="backgroundMusic" loop>
+                <source src="https://files.catbox.moe/hm82kc.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="playPauseButton">❚❚</button>
+            <span id="musicStatus">Playing music</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const usernameInput = document.getElementById('usernameInput');
+            const generateButton = document.getElementById('generateButton');
+            const codeOutput = document.getElementById('codeOutput');
+            const themeToggle = document.getElementById('themeToggle');
+            const copyButton = document.getElementById('copyButton');
+            const settingsContainer = document.getElementById('settingsContainer');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const playPauseButton = document.getElementById('playPauseButton');
+            const musicStatus = document.getElementById('musicStatus');
+            const body = document.body;
+
+            let isGenerating = false;
+            let generateAnimationInterval;
+            const originalGenerateButtonText = generateButton.textContent;
+
+            const categorizedConfigs = {
+                'General Settings': {
+                    'Fps': { type: 'number', default: 45 },
+                    'Msg': { type: 'string', default: 'Yare Yare Daze.' },
+                    'CrewID': { type: 'number', default: 32570691 },
+                    'ChatCmds': { type: 'boolean', default: true },
+                    'CustomName': { type: 'string', default: 'Owner' },
+                    'Hidescreen': { type: 'boolean', default: false },
+                    'LowGraphics': { type: 'boolean', default: false },
+                    'CustomPrefix': { type: 'select', default: '.', options: ['!', '/', '.', '?', '>', '<', '$', ';', ':'] },
+                    'AutoSaveLocation': { type: 'select', default: 'Downhill_Rooftop', options: ['Downhill_Rooftop', 'Uphill_Rooftop', 'DA_FURNITURE'] }
+                },
+                'Combat & Attack': {
+                    'Attack': { type: 'select', default: 'Heavy', options: ['Heavy', 'Light'] },
+                    'GunMode': { type: 'select', default: 'Aug', options: ['LMG', 'Rifle', 'Aug'] },
+                    'Position': { type: 'select', default: 'Back', options: ['Back', 'Left', 'Right', 'Mid', 'UpMid', 'UpLeft', 'UpLeft', 'Walk'] },
+                    'Resolver': { type: 'boolean', default: false, label: 'Resolver (Anti-Lock)' },
+                    'AttackMode': { type: 'select', default: 'Sky', options: ['Sky', 'Under'] },
+                    'AutoPrediction': { type: 'boolean', default: false },
+                    'AttackDistance': { type: 'number', default: 75 },
+                    'AttackPrediction': { type: 'number', default: 0.34, step: 0.01 },
+                    'AttackAutoPrediction': { type: 'number', default: 0.23, step: 0.01 },
+                    'AntiStomp': { type: 'boolean', default: true }
+                },
+                'Stand & Appearance': {
+                    'TPMode': { type: 'select', default: 'Cart', options: ['Knock', 'Cart'] },
+                    'AutoMask': { type: 'boolean', default: true },
+                    'MaskMode': { type: 'select', default: 'Riot', options: ['Surgeon', 'Paintball', 'Skull', 'Pumpkin', 'Hockey', 'Ninja', 'Riot', 'Breathing'] },
+                    'StandMode': {
+                        type: 'select',
+                        default: 'Star Platinum : OverHeaven',
+                        options: [
+                            'Star Platinum : OverHeaven', 'Star Platinum: The World',
+                            'Star Platinum, Za Warudo!', 'TheWorld', 'Cmoon',
+                            'King Crimson', 'Killer Queen', 'MIH', 'D4C'
+                        ]
+                    },
+                    'Smoothing': { type: 'boolean', default: false },
+                    'SummonPoses': { type: 'select', default: 'Pose3', options: ['false', 'Pose1', 'Pose2', 'Pose3'] },
+                    'CustomSummon': { type: 'string', default: 'Summon!' }
+                },
+                'Sound Settings': {
+                    'Sounds': { type: 'boolean', default: true },
+                    'CustomSong': { type: 'number', default: 123456 },
+                    'SummonMusic': { type: 'boolean', default: true },
+                    'SummonMusicID': { type: 'string', default: 'Default' }
+                }
+            };
+
+            const renderConfigInputs = () => {
+                settingsContainer.innerHTML = '';
+                for (const categoryName in categorizedConfigs) {
+                    const categoryData = categorizedConfigs[categoryName];
+
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'settings-category';
+
+                    const categoryHeader = document.createElement('div');
+                    categoryHeader.className = 'category-header';
+                    categoryHeader.innerHTML = `<span>${categoryName}</span><span class="arrow-icon">▶</span>`;
+                    categoryDiv.appendChild(categoryHeader);
+
+                    const categoryContent = document.createElement('div');
+                    categoryContent.className = 'category-content';
+                    categoryDiv.appendChild(categoryContent);
+
+                    categoryHeader.addEventListener('click', () => {
+                        categoryContent.classList.toggle('expanded');
+                        categoryHeader.querySelector('.arrow-icon').classList.toggle('rotated');
+                    });
+
+                    for (const key in categoryData) {
+                        const config = categoryData[key];
+                        const settingItem = document.createElement('div');
+                        settingItem.className = 'setting-item';
+
+                        const label = document.createElement('label');
+                        label.htmlFor = `config-${key}`;
+                        label.className = 'setting-label';
+                        label.textContent = config.label || (key.replace(/([A-Z])/g, ' $1').trim() + ':');
+
+                        let inputElement;
+
+                        if (config.type === 'boolean') {
+                            inputElement = document.createElement('select');
+                            inputElement.id = `config-${key}`;
+                            inputElement.className = 'select-field';
+                            ['true', 'false'].forEach(optionValue => {
+                                const option = document.createElement('option');
+                                option.value = optionValue;
+                                option.textContent = optionValue;
+                                if (String(config.default) === optionValue) {
+                                    option.selected = true;
+                                }
+                                inputElement.appendChild(option);
+                            });
+                        } else if (config.type === 'select') {
+                            inputElement = document.createElement('select');
+                            inputElement.id = `config-${key}`;
+                            inputElement.className = 'select-field';
+                            config.options.forEach(optionValue => {
+                                const option = document.createElement('option');
+                                option.value = optionValue;
+                                option.textContent = optionValue;
+                                if (config.default === optionValue) {
+                                    option.selected = true;
+                                }
+                                inputElement.appendChild(option);
+                            });
+                        } else if (config.type === 'number') {
+                            inputElement = document.createElement('input');
+                            inputElement.type = 'number';
+                            inputElement.id = `config-${key}`;
+                            inputElement.className = 'input-field';
+                            inputElement.value = config.default;
+                            if (config.step) {
+                                inputElement.step = config.step;
+                            }
+                        } else {
+                            inputElement = document.createElement('input');
+                            inputElement.type = 'text';
+                            inputElement.id = `config-${key}`;
+                            inputElement.className = 'input-field';
+                            inputElement.value = config.default;
+                        }
+
+                        settingItem.appendChild(label);
+                        settingItem.appendChild(inputElement);
+                        categoryContent.appendChild(settingItem);
+                    }
+                    settingsContainer.appendChild(categoryDiv);
+                }
+            };
+
+            const adjustTextareaHeight = (element) => {
+                element.style.height = 'auto';
+                element.style.height = element.scrollHeight + 'px';
+            };
+
+            const typeText = (element, text, delay = 1) => {
+                return new Promise(resolve => {
+                    let i = 0;
+                    element.value = '';
+                    adjustTextareaHeight(element);
+                    const interval = setInterval(() => {
+                        if (i < text.length) {
+                            element.value += text.charAt(i);
+                            adjustTextareaHeight(element);
+                            element.scrollTop = element.scrollHeight;
+                            i++;
+                        } else {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, delay);
+                });
+            };
+
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.textContent = '🌙';
+            } else {
+                themeToggle.textContent = '☀️';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                if (body.classList.contains('light-mode')) {
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.textContent = '?';
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.textContent = '☀️';
+                }
+            });
+
+            const validateAndGenerate = async () => {
+                const username = usernameInput.value.trim();
+                if (!username) {
+                    generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+                    generateButton.disabled = true;
+                    return;
+                }
+
+                if (isGenerating) return;
+
+                isGenerating = true;
+                generateButton.disabled = true;
+
+                let dotCount = 0;
+                generateAnimationInterval = setInterval(() => {
+                    dotCount = (dotCount % 4) + 1;
+                    generateButton.textContent = 'Generating' + '.'.repeat(dotCount);
+                }, 300);
+
+                let ownerLine = `getgenv().Owner = "${username}"`;
+
+                let configString = [];
+                for (const categoryName in categorizedConfigs) {
+                    const categoryData = categorizedConfigs[categoryName];
+                    for (const key in categoryData) {
+                        const config = categoryData[key];
+                        const configElement = document.getElementById(`config-${key}`);
+                        let value = configElement.value;
+
+                        if (config.type === 'boolean') {
+                            value = value.toLowerCase();
+                        } else if (config.type === 'number') {
+                            
+                        } else {
+                            value = `'${value}'`;
+                        }
+                        configString.push(`['${key}'] = ${value}`);
+                    }
+                }
+
+                const generatedCode = `--stando setup
+getgenv()._="Join discord.gg/msgabv2t9Q | discord.gg/stando to get latest update ok bai >.+ | If you pay for this script you get scammed, this script is completely free ok"
+${ownerLine}
+getgenv().Configuration = {
+${configString.join(',\n')}
+}loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
+
+                await typeText(codeOutput, generatedCode);
+
+                clearInterval(generateAnimationInterval);
+                generateButton.textContent = originalGenerateButtonText;
+                isGenerating = false;
+                generateButton.disabled = false;
+            };
+
+            generateButton.addEventListener('click', validateAndGenerate);
+
+            usernameInput.addEventListener('input', () => {
+                if (usernameInput.value.trim()) {
+                    generateButton.disabled = false;
+                    generateButton.textContent = originalGenerateButtonText;
+                } else {
+                    generateButton.disabled = true;
+                    generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+                }
+            });
+
+            copyButton.addEventListener('click', () => {
+                codeOutput.select();
+                try {
+                    document.execCommand('copy');
+                    copyButton.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copy';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Error copying code: ', err);
+                }
+            });
+
+            backgroundMusic.volume = 0.3;
+
+            const updateAudioUI = () => {
+                if (backgroundMusic.paused) {
+                    playPauseButton.textContent = '▶';
+                    musicStatus.textContent = 'Music paused';
+                } else {
+                    playPauseButton.textContent = '❚❚';
+                    musicStatus.textContent = 'Playing music';
+                }
+            };
+
+            updateAudioUI();
+
+            playPauseButton.addEventListener('click', () => {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play().then(() => {
+                        updateAudioUI();
+                    }).catch(error => {
+                        console.error('Failed to play music:', error);
+                        musicStatus.textContent = 'Error playing music';
+                        updateAudioUI();
+                    });
+                } else {
+                    backgroundMusic.pause();
+                    updateAudioUI();
+                }
+            });
+
+            const initialPlayAttempt = () => {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play().then(() => {
+                        updateAudioUI();
+                    }).catch(error => {
+                        console.log('Initial autoplay prevented:', error);
+                        updateAudioUI();
+                    });
+                }
+                document.body.removeEventListener('click', initialPlayAttempt);
+            };
+
+            document.body.addEventListener('click', initialPlayAttempt, { once: true });
+
+            renderConfigInputs();
+            adjustTextareaHeight(codeOutput);
+
+            if (!usernameInput.value.trim()) {
+                generateButton.disabled = true;
+                generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+            }
+        });
+    </script>
+</body>
+</html>
