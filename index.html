@@ -348,7 +348,6 @@
 
         <h2 class="text-2xl font-bold text-center mt-6 mb-4">Config</h2>
         <div id="settingsContainer" class="w-full">
-            <!-- Dynamic settings will be rendered here -->
         </div>
         
         <div id="sniperWhitelistContainer" class="w-full hidden">
@@ -408,7 +407,7 @@
             let generateAnimationInterval;
             const originalGenerateButtonText = generateButton.textContent;
 
-            // --- Configuration Data for both modes ---
+            // --- configs ig?
             const standoConfigs = {
                 'General Settings': {
                     'Fps': { type: 'number', default: 45 },
@@ -561,7 +560,6 @@
                 }
             };
             
-            // Function to update UI based on selected mode
             const updateUIForMode = (mode) => {
                 if (mode === 'stando') {
                     renderConfigInputs(standoConfigs);
@@ -570,11 +568,10 @@
                     renderConfigInputs(sniperConfigs);
                     sniperWhitelistContainer.classList.remove('hidden');
                 }
-                codeOutput.value = ''; // Clear output when mode changes
+                codeOutput.value = '';
                 adjustTextareaHeight(codeOutput);
             };
 
-            // Event listener for mode change
             modeSelect.addEventListener('change', (event) => {
                 updateUIForMode(event.target.value);
             });
@@ -615,10 +612,10 @@
                 body.classList.toggle('light-mode');
                 if (body.classList.contains('light-mode')) {
                     localStorage.setItem('theme', 'light');
-                    themeToggle.innerHTML = '&#x1F319;'; // Moon emoji
+                    themeToggle.innerHTML = '&#x1F319;';
                 } else {
                     localStorage.setItem('theme', 'dark');
-                    themeToggle.innerHTML = '&#x2600;&#xFE0F;'; // Sun emoji
+                    themeToggle.innerHTML = '&#x2600;&#xFE0F;';
                 }
             });
 
@@ -784,7 +781,6 @@ loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
 
             document.body.addEventListener('click', initialPlayAttempt, { once: true });
 
-            // Initial render
             updateUIForMode('stando');
             adjustTextareaHeight(codeOutput);
 
