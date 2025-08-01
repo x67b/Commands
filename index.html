@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stando Setup</title>
+    <title>Stando / Sniper Bot Setup</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -25,9 +25,6 @@
             padding: 1rem;
             box-sizing: border-box;
             transition: background-color 0.4s ease, color 0.4s ease;
-            zoom: 0.9; /* Max zoom level */
-            -moz-transform: scale(0.9); /* Firefox */
-            -moz-transform-origin: top left;
         }
         .container {
             background-color: rgba(18, 18, 18, 0.95);
@@ -48,7 +45,7 @@
             color: #909090;
             text-align: center;
         }
-        .input-field, .select-field {
+        .input-field, .select-field, .textarea-field {
             background-color: #2a2a2a;
             border: 1px solid #444444;
             color: #e0e0e0;
@@ -61,17 +58,19 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+        }
+        .select-field {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23e0e0e0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.8rem center;
             background-size: 1.2rem;
             padding-right: 2.5rem;
         }
-        .input-field:hover, .select-field:hover {
+        .input-field:hover, .select-field:hover, .textarea-field:hover {
             border-color: #6a6a6a;
             box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
         }
-        .input-field:focus, .select-field:focus {
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
             outline: none;
             border-color: #5b9bff;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
@@ -135,17 +134,19 @@
         body.light-mode .discord-text {
             color: #666666;
         }
-        body.light-mode .input-field, body.light-mode .select-field {
+        body.light-mode .input-field, body.light-mode .select-field, body.light-mode .textarea-field {
             background-color: #f8f8f8;
             border-color: #d0d0d0;
             color: #333333;
+        }
+        body.light-mode .select-field {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
         }
-        body.light-mode .input-field:hover, body.light-mode .select-field:hover {
+        body.light-mode .input-field:hover, body.light-mode .select-field:hover, body.light-mode .textarea-field:hover {
             border-color: #a0a0a0;
             box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
         }
-        body.light-mode .input-field:focus, body.light-mode .select-field:focus {
+        body.light-mode .input-field:focus, body.light-mode .select-field:focus, body.light-mode .textarea-field:focus {
             border-color: #5b9bff;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
             background-color: #ffffff;
@@ -247,7 +248,7 @@
             transition: max-height 0.6s ease-out, padding 0.6s ease-out;
         }
         .category-content.expanded {
-            max-height: 1500px;
+            max-height: 1500px; /* Large enough to accommodate all content */
             padding: 1.2rem 1.4rem;
         }
         @media (min-width: 640px) {
@@ -322,24 +323,42 @@
             ☀️
         </button>
 
-        <h1 class="text-3xl font-extrabold text-center mb-0 leading-tight">Stando Setup</h1>
+        <h1 class="text-3xl font-extrabold text-center mb-0 leading-tight">Setup Generator</h1>
         <p class="discord-text">
             Join discord.gg/stando for commands and support with the script. | made by phowg/hayden
         </p>
 
         <div class="w-full">
+            <label for="modeSelect" class="block text-sm font-medium mb-2 text-center">Select Mode:</label>
+            <select id="modeSelect" class="select-field">
+                <option value="stando">Stando Generator</option>
+                <option value="sniper">Sniper Bot</option>
+            </select>
+        </div>
+        
+        <div class="w-full">
             <label for="usernameInput" class="block text-sm font-medium mb-2 text-center">Owner's Username:</label>
             <input
                 type="text"
                 id="usernameInput"
-                placeholder="..."
+                placeholder="Enter the owner's username..."
                 class="input-field"
             />
         </div>
 
         <h2 class="text-2xl font-bold text-center mt-6 mb-4">Config</h2>
         <div id="settingsContainer" class="w-full">
-            
+            <!-- Dynamic settings will be rendered here -->
+        </div>
+        
+        <div id="sniperWhitelistContainer" class="w-full hidden">
+            <label for="whitelistInput" class="block text-sm font-medium mb-2 text-center">Whitelist (Comma-separated IDs):</label>
+            <input
+                type="text"
+                id="whitelistInput"
+                placeholder="e.g., 1234567, 7654321, 987654"
+                class="input-field"
+            />
         </div>
 
         <button id="generateButton" class="generate-button w-full md:w-auto">
@@ -353,7 +372,7 @@
                 readonly
                 class="code-output w-full"
                 rows="15"
-                placeholder="script..."
+                placeholder="Your generated Lua script will appear here."
             ></textarea>
             <button id="copyButton" class="copy-button">Copy</button>
         </div>
@@ -376,6 +395,10 @@
             const themeToggle = document.getElementById('themeToggle');
             const copyButton = document.getElementById('copyButton');
             const settingsContainer = document.getElementById('settingsContainer');
+            const modeSelect = document.getElementById('modeSelect');
+            const whitelistInput = document.getElementById('whitelistInput');
+            const sniperWhitelistContainer = document.getElementById('sniperWhitelistContainer');
+
             const backgroundMusic = document.getElementById('backgroundMusic');
             const playPauseButton = document.getElementById('playPauseButton');
             const musicStatus = document.getElementById('musicStatus');
@@ -385,7 +408,8 @@
             let generateAnimationInterval;
             const originalGenerateButtonText = generateButton.textContent;
 
-            const categorizedConfigs = {
+            // --- Configuration Data for both modes ---
+            const standoConfigs = {
                 'General Settings': {
                     'Fps': { type: 'number', default: 45 },
                     'Msg': { type: 'string', default: 'Yare Yare Daze.' },
@@ -400,7 +424,7 @@
                 'Combat & Attack': {
                     'Attack': { type: 'select', default: 'Heavy', options: ['Heavy', 'Light'] },
                     'GunMode': { type: 'select', default: 'Aug', options: ['LMG', 'Rifle', 'Aug'] },
-                    'Position': { type: 'select', default: 'Back', options: ['Back', 'Left', 'Right', 'Mid', 'UpMid', 'UpLeft', 'UpLeft', 'Walk'] },
+                    'Position': { type: 'select', default: 'Back', options: ['Back', 'Left', 'Right', 'Mid', 'UpMid', 'UpLeft', 'Walk'] },
                     'Resolver': { type: 'boolean', default: false, label: 'Resolver (Anti-Lock)' },
                     'AttackMode': { type: 'select', default: 'Sky', options: ['Sky', 'Under'] },
                     'AutoPrediction': { type: 'boolean', default: false },
@@ -434,10 +458,28 @@
                 }
             };
 
-            const renderConfigInputs = () => {
+            const sniperConfigs = {
+                'Main Settings': {
+                    'Guns': { type: 'string', default: 'Rifle, Flintlock' },
+                    'Prediction': { type: 'number', default: 1 },
+                    'Multiplier': { type: 'number', default: 3 },
+                    'StompHeight': { type: 'number', default: 5 },
+                    'RandomStompOffset': { type: 'number', default: 0 },
+                    'SpareAmmo': { type: 'number', default: 8 },
+                    'ForceAmmo': { type: 'number', default: 4 },
+                    'CrewID': { type: 'number', default: 32570691 },
+                    'AntiStomp': { type: 'boolean', default: true },
+                    'LowGraphic': { type: 'boolean', default: false },
+                    'HideScreen': { type: 'boolean', default: false },
+                    'CustomPrefix': { type: 'select', default: '!', options: ['!', '/', '.', '?', '>', '<', '$', ';', ':'] },
+                    'Fpscap': { type: 'number', default: 60 }
+                }
+            };
+
+            const renderConfigInputs = (configs) => {
                 settingsContainer.innerHTML = '';
-                for (const categoryName in categorizedConfigs) {
-                    const categoryData = categorizedConfigs[categoryName];
+                for (const categoryName in configs) {
+                    const categoryData = configs[categoryName];
 
                     const categoryDiv = document.createElement('div');
                     categoryDiv.className = 'settings-category';
@@ -518,6 +560,24 @@
                     settingsContainer.appendChild(categoryDiv);
                 }
             };
+            
+            // Function to update UI based on selected mode
+            const updateUIForMode = (mode) => {
+                if (mode === 'stando') {
+                    renderConfigInputs(standoConfigs);
+                    sniperWhitelistContainer.classList.add('hidden');
+                } else if (mode === 'sniper') {
+                    renderConfigInputs(sniperConfigs);
+                    sniperWhitelistContainer.classList.remove('hidden');
+                }
+                codeOutput.value = ''; // Clear output when mode changes
+                adjustTextareaHeight(codeOutput);
+            };
+
+            // Event listener for mode change
+            modeSelect.addEventListener('change', (event) => {
+                updateUIForMode(event.target.value);
+            });
 
             const adjustTextareaHeight = (element) => {
                 element.style.height = 'auto';
@@ -555,17 +615,17 @@
                 body.classList.toggle('light-mode');
                 if (body.classList.contains('light-mode')) {
                     localStorage.setItem('theme', 'light');
-                    themeToggle.textContent = '?';
+                    themeToggle.innerHTML = '&#x1F319;'; // Moon emoji
                 } else {
                     localStorage.setItem('theme', 'dark');
-                    themeToggle.textContent = '☀️';
+                    themeToggle.innerHTML = '&#x2600;&#xFE0F;'; // Sun emoji
                 }
             });
 
             const validateAndGenerate = async () => {
                 const username = usernameInput.value.trim();
                 if (!username) {
-                    generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+                    generateButton.textContent = 'ENTER A VALID USERNAME';
                     generateButton.disabled = true;
                     return;
                 }
@@ -580,34 +640,73 @@
                     dotCount = (dotCount % 4) + 1;
                     generateButton.textContent = 'Generating' + '.'.repeat(dotCount);
                 }, 300);
+                
+                const mode = modeSelect.value;
+                let generatedCode = '';
+                
+                if (mode === 'stando') {
+                    let ownerLine = `getgenv().Owner = "${username}"`;
+                    let configString = [];
+                    for (const categoryName in standoConfigs) {
+                        const categoryData = standoConfigs[categoryName];
+                        for (const key in categoryData) {
+                            const config = categoryData[key];
+                            const configElement = document.getElementById(`config-${key}`);
+                            let value = configElement.value;
 
-                let ownerLine = `getgenv().Owner = "${username}"`;
-
-                let configString = [];
-                for (const categoryName in categorizedConfigs) {
-                    const categoryData = categorizedConfigs[categoryName];
-                    for (const key in categoryData) {
-                        const config = categoryData[key];
-                        const configElement = document.getElementById(`config-${key}`);
-                        let value = configElement.value;
-
-                        if (config.type === 'boolean') {
-                            value = value.toLowerCase();
-                        } else if (config.type === 'number') {
-                            
-                        } else {
-                            value = `'${value}'`;
+                            if (config.type === 'boolean') {
+                                value = value.toLowerCase();
+                            } else if (config.type === 'string' || config.type === 'select') {
+                                value = `'${value}'`;
+                            }
+                            configString.push(`['${key}'] = ${value}`);
                         }
-                        configString.push(`['${key}'] = ${value}`);
                     }
-                }
 
-                const generatedCode = `--stando setup
+                    generatedCode = `--stando setup
 getgenv()._="Join discord.gg/msgabv2t9Q | discord.gg/stando to get latest update ok bai >.+ | If you pay for this script you get scammed, this script is completely free ok"
 ${ownerLine}
 getgenv().Configuration = {
-${configString.join(',\n')}
-}loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
+    ${configString.join(',\n    ')}
+}
+loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
+
+                } else if (mode === 'sniper') {
+                    const whitelistValue = whitelistInput.value.trim();
+                    let whitelistArray = [];
+                    if (whitelistValue) {
+                        whitelistArray = whitelistValue.split(',').map(id => id.trim()).filter(id => id.length > 0);
+                    }
+                    
+                    const whitelistString = whitelistArray.length > 0 ? whitelistArray.join(',\n    ') : '';
+
+                    let configString = [];
+                    const configData = sniperConfigs['Main Settings'];
+                    for (const key in configData) {
+                        const config = configData[key];
+                        const configElement = document.getElementById(`config-${key}`);
+                        let value = configElement.value;
+                        
+                        if (key === 'Guns') {
+                            const gunArray = value.split(',').map(gun => `"${gun.trim()}"`).join(', ');
+                            value = `{${gunArray}}`;
+                        } else if (config.type === 'boolean') {
+                             value = value.toLowerCase();
+                        } else if (config.type === 'string' || config.type === 'select') {
+                            value = `"${value}"`;
+                        }
+                        configString.push(`['${key}'] = ${value}`);
+                    }
+                    
+                    generatedCode = `getgenv().Owner = "${username}"
+getgenv().Whitelist = {
+    ${whitelistString}
+}
+getgenv().Configuration = {
+    ${configString.join(',\n    ')}
+}
+loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
+                }
 
                 await typeText(codeOutput, generatedCode);
 
@@ -625,7 +724,7 @@ ${configString.join(',\n')}
                     generateButton.textContent = originalGenerateButtonText;
                 } else {
                     generateButton.disabled = true;
-                    generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+                    generateButton.textContent = 'ENTER A VALID USERNAME';
                 }
             });
 
@@ -685,12 +784,13 @@ ${configString.join(',\n')}
 
             document.body.addEventListener('click', initialPlayAttempt, { once: true });
 
-            renderConfigInputs();
+            // Initial render
+            updateUIForMode('stando');
             adjustTextareaHeight(codeOutput);
 
             if (!usernameInput.value.trim()) {
                 generateButton.disabled = true;
-                generateButton.textContent = 'ENTER A VALID USERNAME AT TOP';
+                generateButton.textContent = 'ENTER A VALID USERNAME';
             }
         });
     </script>
