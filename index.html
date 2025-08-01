@@ -703,7 +703,7 @@ getgenv().Owner = "${username}"
 getgenv().Whitelist = {
     ${whitelistString}
 }
-getgenv().Configuration = {
+getgenv().Configuration = { ---------- >>>>> Recommended stomp random offset is 1 or 2 at max <<<<< ------------
     ${configString.join(',\n    ')}
 }
 loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
