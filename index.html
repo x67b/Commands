@@ -378,7 +378,7 @@
 
         <div class="audio-controls">
             <audio id="backgroundMusic" loop>
-                <source src="https://files.catbox.moe/hm82kc.mp3" type="audio/mpeg">
+                <source src="https://files.catbox.moe/itwn5a.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
             <button id="playPauseButton">❚❚</button>
@@ -407,7 +407,7 @@
             let generateAnimationInterval;
             const originalGenerateButtonText = generateButton.textContent;
 
-            // --- configs ig?
+            // --- Configuration Objects ---
             const standoConfigs = {
                 'General Settings': {
                     'Fps': { type: 'number', default: 45 },
@@ -475,6 +475,7 @@
                 }
             };
 
+            // --- UI Rendering ---
             const renderConfigInputs = (configs) => {
                 settingsContainer.innerHTML = '';
                 for (const categoryName in configs) {
@@ -544,7 +545,7 @@
                             if (config.step) {
                                 inputElement.step = config.step;
                             }
-                        } else {
+                        } else { // 'string'
                             inputElement = document.createElement('input');
                             inputElement.type = 'text';
                             inputElement.id = `config-${key}`;
@@ -576,6 +577,7 @@
                 updateUIForMode(event.target.value);
             });
 
+            // --- Textarea and Typing Effect ---
             const adjustTextareaHeight = (element) => {
                 element.style.height = 'auto';
                 element.style.height = element.scrollHeight + 'px';
@@ -730,68 +732,48 @@ loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
             });
 
             copyButton.addEventListener('click', () => {
+                if (!codeOutput.value) return;
                 codeOutput.select();
-                try {
-                    document.execCommand('copy');
-                    copyButton.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyButton.textContent = 'Copy';
-                    }, 2000);
-                } catch (err) {
-                    console.error('Error copying code: ', err);
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(codeOutput.value).then(() => {
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                        }, 2000);
+                    });
+                } else {
+                    try {
+                        document.execCommand('copy');
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Fallback copy failed', err);
+                    }
                 }
             });
-
-            backgroundMusic.volume = 0.3;
-
-            const updateAudioUI = () => {
-                if (backgroundMusic.paused) {
-                    playPauseButton.textContent = '▶';
-                    musicStatus.textContent = 'Music paused';
-                } else {
-                    playPauseButton.textContent = '❚❚';
-                    musicStatus.textContent = 'Playing music';
-                }
-            };
-
-            updateAudioUI();
 
             playPauseButton.addEventListener('click', () => {
                 if (backgroundMusic.paused) {
-                    backgroundMusic.play().then(() => {
-                        updateAudioUI();
-                    }).catch(error => {
-                        console.error('Failed to play music:', error);
-                        musicStatus.textContent = 'Error playing music';
-                        updateAudioUI();
-                    });
+                    backgroundMusic.play();
+                    playPauseButton.textContent = '❚❚';
+                    musicStatus.textContent = 'Playing music';
                 } else {
                     backgroundMusic.pause();
-                    updateAudioUI();
+                    playPauseButton.textContent = '▶';
+                    musicStatus.textContent = 'Music paused';
                 }
             });
 
-            const initialPlayAttempt = () => {
-                if (backgroundMusic.paused) {
-                    backgroundMusic.play().then(() => {
-                        updateAudioUI();
-                    }).catch(error => {
-                        console.log('Initial autoplay prevented:', error);
-                        updateAudioUI();
-                    });
-                }
-                document.body.removeEventListener('click', initialPlayAttempt);
-            };
-
-            document.body.addEventListener('click', initialPlayAttempt, { once: true });
+            backgroundMusic.play().catch(() => {
+                playPauseButton.textContent = '▶';
+                musicStatus.textContent = 'Music paused';
+            });
 
             updateUIForMode('stando');
-            adjustTextareaHeight(codeOutput);
-
-            if (!usernameInput.value.trim()) {
-                generateButton.disabled = true;
-                generateButton.textContent = 'ENTER A VALID USERNAME';
-            }
         });
     </script>
 </body>
