@@ -355,7 +355,7 @@
 
     <div class="audio-controls">
         <audio id="backgroundMusic" loop>
-            <source src="https://files.catbox.moe/itwn5a.mp3" type="audio/mpeg">
+            <source src="https://files.catbox.moe/itwn5a.mp3" type="audio/mpeg" onerror="this.onerror=null;this.parentElement.style.display='none';">
             Your browser does not support the audio element.
         </audio>
         <button id="playPauseButton">❚❚</button>
@@ -504,7 +504,11 @@
             const sniperConfigs = {
                 'Main Settings': {
                     'Guns': { type: 'string', default: 'Rifle, Flintlock' },
-                    'Prediction': { type: 'number', default: 1 },
+                    'Strafe': { type: 'select', default: 'Normal', options: ['Normal', 'Random'] },
+                    'Void': { type: 'select', default: 'Unhittable', options: ['Unhittable', 'UpDown', 'Meta', 'Lerp', 'Custom'] },
+                    'Lerp': { type: 'number', default: 0.1, step: 0.01 },
+                    'CFrame': { type: 'string', default: '0, 1, 0' },
+                    'Prediction': { type: 'number', default: 1, step: 0.1 },
                     'Multiplier': { type: 'number', default: 3 },
                     'StompHeight': { type: 'number', default: 5 },
                     'RandomStompOffset': { type: 'number', default: 0 },
@@ -513,9 +517,9 @@
                     'CrewID': { type: 'number', default: 32570691 },
                     'AntiStomp': { type: 'boolean', default: true },
                     'LowGraphic': { type: 'boolean', default: false },
-                    'HideScreen': { type: 'boolean', default: false },
+                    'HideScreen': { type: 'boolean', default: true },
                     'CustomPrefix': { type: 'select', default: '!', options: ['!', '/', '.', '?', '>', '<', '$', ';', ':'] },
-                    'Fpscap': { type: 'number', default: 60 }
+                    'Fpscap': { type: 'number', default: 150 }
                 }
             };
 
@@ -622,7 +626,7 @@
 
             const adjustTextareaHeight = (element) => {
                 element.style.height = 'auto';
-                element.style.height = element.scrollHeight + 'px';
+                element.style.height = (element.scrollHeight) + 'px';
             };
 
             const typeText = (element, text, delay = 1) => {
@@ -656,10 +660,10 @@
                 body.classList.toggle('light-mode');
                 if (body.classList.contains('light-mode')) {
                     localStorage.setItem('theme', 'light');
-                    themeToggle.innerHTML = '&#x1F319;';
+                    themeToggle.innerHTML = '&#x1F319;'; // Moon emoji
                 } else {
                     localStorage.setItem('theme', 'dark');
-                    themeToggle.innerHTML = '&#x2600;&#xFE0F;';
+                    themeToggle.innerHTML = '&#x2600;&#xFE0F;'; // Sun emoji
                 }
             });
 
@@ -667,7 +671,10 @@
                 const username = usernameInput.value.trim();
                 if (!username) {
                     generateButton.textContent = 'ENTER A VALID USERNAME';
-                    generateButton.disabled = true;
+                    usernameInput.focus();
+                    setTimeout(() => {
+                        generateButton.textContent = originalGenerateButtonText;
+                    }, 2000);
                     return;
                 }
 
@@ -713,6 +720,7 @@ getgenv().Configuration = {
 loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
 
                 } else if (mode === 'sniper') {
+                    const ownerLine = `getgenv().Owner = "${username}"`;
                     const whitelistValue = whitelistInput.value.trim();
                     let whitelistArray = [];
                     if (whitelistValue) {
@@ -720,6 +728,10 @@ loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
                     }
                     
                     const whitelistString = whitelistArray.length > 0 ? whitelistArray.join(',\n    ') : '';
+                     let whitelistTable = '';
+                    if (whitelistArray.length > 0) {
+                        whitelistTable = `getgenv().Whitelist = {\n    ${whitelistString}\n}\n\n`;
+                    }
 
                     let configString = [];
                     const configData = sniperConfigs['Main Settings'];
@@ -728,9 +740,9 @@ loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
                         const configElement = document.getElementById(`config-${key}`);
                         let value = configElement.value;
                         
-                        if (key === 'Guns') {
-                            const gunArray = value.split(',').map(gun => `"${gun.trim()}"`).join(', ');
-                            value = `{${gunArray}}`;
+                        if (key === 'Guns' || key === 'CFrame') {
+                            const itemArray = value.split(',').map(item => `"${item.trim()}"`).join(', ');
+                             value = `{${itemArray}}`;
                         } else if (config.type === 'boolean') {
                              value = value.toLowerCase();
                         } else if (config.type === 'string' || config.type === 'select') {
@@ -739,68 +751,52 @@ loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
                         configString.push(`['${key}'] = ${value}`);
                     }
                     
-                    generatedCode = `
+                    generatedCode = `-- Sniper Bot Setup
 getgenv()._="Join discord.gg/msgabv2t9Q | discord.gg/stando to get latest update ok bai | If you pay for this script you get scammed, this script is completely free ok"
+--[[
 
-getgenv().Owner = "${username}"
+To get started in "getgenv().Owner" put the username you want to control the alt.
 
-getgenv().Whitelist = {
-    ${whitelistString}
-}
-getgenv().Configuration = { ---------- >>>>> Recommended stomp random offset is 1 or 2 at max <<<<< ------------
+!! \\ MAKE SURE THE LocalPlayer AND LocalPlayer ACCOUNT ARE IN SAME SERVER // !!
+
+--// Example \\
+Before --> getgenv().Owner = "OWNER_USERNAME_HERE"
+After  --> getgenv().Owner = "XK5NG"
+
+^^ --> This is just the example don't put the username here]]
+
+${ownerLine}
+${whitelistTable}getgenv().Configuration = {
     ${configString.join(',\n    ')}
 }
-loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
+loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`
                 }
 
-                await typeText(codeOutput, generatedCode);
-
                 clearInterval(generateAnimationInterval);
-                generateButton.textContent = originalGenerateButtonText;
+                await typeText(codeOutput, generatedCode);
+                generateButton.textContent = 'Generation Complete!';
                 isGenerating = false;
-                generateButton.disabled = false;
+                
+                setTimeout(() => {
+                    generateButton.disabled = false;
+                    generateButton.textContent = originalGenerateButtonText;
+                }, 2500);
             };
 
             generateButton.addEventListener('click', validateAndGenerate);
-
-            usernameInput.addEventListener('input', () => {
-                if (usernameInput.value.trim()) {
-                    generateButton.disabled = false;
-                    generateButton.textContent = originalGenerateButtonText;
-                } else {
-                    generateButton.disabled = true;
-                    generateButton.textContent = 'ENTER A VALID USERNAME';
-                }
-            });
-
+            
             copyButton.addEventListener('click', () => {
-                if (!codeOutput.value) return;
                 codeOutput.select();
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(codeOutput.value).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 2000);
-                    });
-                } else {
-                    try {
-                        document.execCommand('copy');
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 2000);
-                    } catch (err) {
-                        console.error('Fallback copy failed', err);
-                    }
-                }
+                document.execCommand('copy');
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                }, 1500);
             });
 
             playPauseButton.addEventListener('click', () => {
                 if (backgroundMusic.paused) {
-                    backgroundMusic.play();
+                    backgroundMusic.play().catch(e => console.log("Audio play failed: ", e));
                     playPauseButton.textContent = '❚❚';
                     musicStatus.textContent = 'Playing music';
                 } else {
@@ -809,12 +805,8 @@ loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`;
                     musicStatus.textContent = 'Music paused';
                 }
             });
-
-            backgroundMusic.play().catch(() => {
-                playPauseButton.textContent = '▶';
-                musicStatus.textContent = 'Music paused';
-            });
-
+            
+            // yes
             updateUIForMode('stando');
         });
     </script>
