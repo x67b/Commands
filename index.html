@@ -3,812 +3,360 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gg/stando made by phowg</title>
+    <title>Stando Commands</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+        :root {
+            --bg-dark-purple: #1a092a;
+            --bg-light-purple: #3b0764;
+            --card-purple: #2a1142;
+            --border-purple: #4c1d95;
+            --accent-pink: #f472b6;
+            --glow-pink: rgba(244, 114, 182, 0.4);
+            --text-light: #e0d9f0;
+            --text-muted: #a39cb9;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            background-image: url('https://cdn.discordapp.com/attachments/1382116899898265732/1400776249839714325/acheron_4k.mp4?ex=688dde0b&is=688c8c8b&hm=22852d413518eb2bb57fe5cd3ae83e3bb9862fd64bd2d07e85aed5b61970e5b3&');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 1rem;
-            box-sizing: border-box;
-            transition: background-color 0.4s ease, color 0.4s ease;
-        }
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.75s ease;
-            opacity: 1;
-        }
-        .spinner {
-            border: 8px solid rgba(255, 255, 255, 0.2);
-            border-left-color: #4299e1;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        body.loaded #preloader {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .container {
-            background-color: rgba(18, 18, 18, 0.95);
-            padding: 2.25rem;
-            border-radius: 1.25rem;
-            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.4), 0 6px 12px -3px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-            transition: background-color 0.4s ease, box-shadow 0.4s ease;
-            position: relative;
-            border: 1px solid rgba(60, 60, 60, 0.5);
-            margin-top: 4rem; /* Add margin to avoid overlap with audio controls */
-        }
-        .discord-text {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-top: 0.4rem;
-            margin-bottom: 1.5rem;
-            color: #909090;
-            text-align: center;
-        }
-        .input-field, .select-field, .textarea-field {
-            background-color: #2a2a2a;
-            border: 1px solid #444444;
-            color: #e0e0e0;
-            padding: 0.75rem 1rem;
-            border-radius: 0.6rem;
-            width: 100%;
-            box-sizing: border-box;
-            transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-            text-align: center;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-        .select-field {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23e0e0e0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.8rem center;
-            background-size: 1.2rem;
-            padding-right: 2.5rem;
-        }
-        .input-field:hover, .select-field:hover, .textarea-field:hover {
-            border-color: #6a6a6a;
-            box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
-        }
-        .input-field:focus, .select-field:focus, .textarea-field:focus {
-            outline: none;
-            border-color: #5b9bff;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
-            background-color: #3a3a3a;
-        }
-        .generate-button {
-            background-color: #4299e1;
-            color: white;
-            padding: 0.85rem 1.75rem;
-            border-radius: 0.6rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
-            border: none;
-            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.25), 0 3px 6px -1px rgba(0, 0, 0, 0.15);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .generate-button:hover:not(:disabled) {
-            background-color: #3182ce;
-            transform: translateY(-2px);
-            box-shadow: 0 9px 15px -4px rgba(0, 0, 0, 0.35), 0 4px 8px -2px rgba(0, 0, 0, 0.2);
-        }
-        .generate-button:active:not(:disabled) {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-        .generate-button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            opacity: 0.7;
-            transform: none;
-            box-shadow: none;
-        }
-        .code-output {
-            background-color: #0a0a0a;
-            border: 1px solid #333333;
-            color: #a0aec0;
-            padding: 1.25rem;
-            border-radius: 0.8rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            min-height: 220px;
-            resize: vertical;
-            overflow-y: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            background-color: var(--bg-dark-purple);
+            background: linear-gradient(-45deg, #1a092a, #3b0764, #2a1142, #4c1d95);
+            background-size: 400% 400%;
+            animation: animated-gradient 15s ease infinite;
+            color: var(--text-light);
+            overflow-x: hidden;
         }
 
-        body.light-mode {
-            background-color: #f0f2f5;
-            background-image: none;
-            color: #333333;
+        .main-header {
+            animation: fadeInDown 0.8s ease-out, float 6s ease-in-out infinite;
         }
-        body.light-mode .container {
-            background-color: #ffffff;
-            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.1), 0 6px 12px -3px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(220, 220, 220, 0.8);
+        .main-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-pink);
+            text-shadow: 0 0 8px var(--glow-pink), 0 0 12px var(--glow-pink), 0 0 20px var(--glow-pink);
         }
-        body.light-mode .discord-text {
-            color: #666666;
+        .main-header p {
+             color: var(--accent-pink);
+             opacity: 0.9;
+             text-shadow: 0 0 5px var(--glow-pink);
         }
-        body.light-mode .input-field, body.light-mode .select-field, body.light-mode .textarea-field {
-            background-color: #f8f8f8;
-            border-color: #d0d0d0;
-            color: #333333;
+
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            color: var(--text-muted);
         }
-        body.light-mode .select-field {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23333333'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+        .tab-button:hover {
+            color: var(--accent-pink);
+            transform: translateY(-2px);
+            text-shadow: 0 0 6px var(--glow-pink);
         }
-        body.light-mode .input-field:hover, body.light-mode .select-field:hover, body.light-mode .textarea-field:hover {
-            border-color: #a0a0a0;
-            box-shadow: 0 0 0 1px rgba(66, 153, 225, 0.1);
+        .tab-button.active {
+            color: var(--accent-pink);
+            border-bottom-color: var(--accent-pink);
+            transform: translateY(-2px);
+            text-shadow: 0 0 8px var(--glow-pink);
         }
-        body.light-mode .input-field:focus, body.light-mode .select-field:focus, body.light-mode .textarea-field:focus {
-            border-color: #5b9bff;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.4);
-            background-color: #ffffff;
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.6s ease-out;
         }
-        body.light-mode .generate-button {
-            background-color: #4299e1;
-            color: white;
-            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 3px 6px -1px rgba(0, 0, 0, 0.06);
+        .tab-content.active {
+            display: block;
         }
-        body.light-mode .generate-button:hover:not(:disabled) {
-            background-color: #3182ce;
+       
+        .command-card {
+            background-color: var(--card-purple);
+            border: 1px solid var(--border-purple);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        body.light-mode .code-output {
-            background-color: #f8f8f8;
-            border-color: #d0d0d0;
-            color: #444444;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        .command-card:hover {
+             transform: translateY(-5px) scale(1.02);
+             box-shadow: 0 0 25px var(--glow-pink), 0 0 40px rgba(0,0,0,0.5);
         }
-        .theme-toggle {
-            position: absolute;
-            top: 1.2rem;
-            right: 1.2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.6rem;
-            color: #e0e0e0;
-            transition: color 0.3s ease;
-            z-index: 21;
-        }
-        body.light-mode .theme-toggle {
-            color: #333333;
-        }
-        .code-output-container {
-            position: relative;
-            width: 100%;
-        }
-        .copy-button {
-            position: absolute;
-            top: 0.8rem;
-            right: 0.8rem;
-            background-color: #4299e1;
-            color: white;
-            padding: 0.35rem 0.9rem;
-            border-radius: 0.45rem;
-            font-size: 0.75rem;
+
+        .command-title {
+            color: var(--text-light);
+            font-size: 1.25rem;
             font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            z-index: 10;
+            border-bottom: 2px solid var(--border-purple);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
         }
-        .copy-button:hover {
-            background-color: #3182ce;
-            transform: translateY(-1px);
-        }
-        .copy-button:active {
-            transform: translateY(0);
-        }
-        .settings-category {
-            background-color: rgba(35, 35, 35, 0.8);
-            border-radius: 0.9rem;
-            margin-bottom: 1.2rem;
-            overflow: hidden;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-            border: 1px solid rgba(60, 60, 60, 0.5);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        body.light-mode .settings-category {
-            background-color: #fcfcfc;
-            border: 1px solid #e8e8e8;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .category-header {
+
+        .command {
+            background-color: #3b1c5f;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.4rem;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1.15rem;
-            border-bottom: 1px solid rgba(60, 60, 60, 0.5);
-            transition: background-color 0.25s ease, border-color 0.3s ease;
-            color: #f0f0f0;
+            flex-wrap: wrap;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
         }
-        body.light-mode .category-header {
-            border-color: #e0e0e0;
-            color: #333333;
+        .command:hover {
+            background-color: var(--border-purple);
+            transform: scale(1.01);
+            border-color: var(--accent-pink);
         }
-        .category-header:hover {
-            background-color: rgba(66, 153, 225, 0.1);
-        }
-        .category-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
-            padding: 1.2rem 1.4rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.6s ease-out, padding 0.6s ease-out;
-        }
-        .category-content.expanded {
-            max-height: 1500px; /* Large enough to accommodate all content */
-            padding: 1.2rem 1.4rem;
-        }
-        @media (min-width: 640px) {
-            .category-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .setting-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-        .setting-label {
-            font-size: 0.85rem;
+
+        .command code {
+            color: #f5d0fe;
             font-weight: 500;
-            margin-bottom: 0.1rem;
-            color: #c0c0c0;
+            font-size: 0.9rem;
         }
-        body.light-mode .setting-label {
-            color: #555555;
+        .command-desc {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-left: 1rem;
+            flex-grow: 1;
+            text-align: right;
         }
-        .arrow-icon {
-            transition: transform 0.3s ease;
-            font-size: 1.1rem;
+        
+        .info-box {
+            background-color: rgba(244, 114, 182, 0.1);
+            border-left: 4px solid var(--accent-pink);
+            color: #fbcfe8;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
         }
-        .arrow-icon.rotated {
-            transform: rotate(90deg);
+
+        @keyframes animated-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .audio-controls {
-            position: absolute;
-            top: 1.2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background-color: rgba(18, 18, 18, 0.8);
-            padding: 0.4rem 0.8rem;
-            border-radius: 0.6rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        body.light-mode .audio-controls {
-            background-color: rgba(255, 255, 255, 0.8);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .audio-controls button {
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        body.light-mode .audio-controls button {
-            color: #333333;
-        }
-        .audio-controls button:hover {
-            color: #5b9bff;
-        }
-        .audio-controls span {
-            font-size: 0.75rem;
-            color: #b0b0b0;
-        }
-        body.light-mode .audio-controls span {
-            color: #666666;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
     </style>
 </head>
-<body>
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
+<body class="antialiased">
 
-    <div class="audio-controls">
-        <audio id="backgroundMusic" loop>
-            <source src="https://files.catbox.moe/itwn5a.mp3" type="audio/mpeg" onerror="this.onerror=null;this.parentElement.style.display='none';">
-            Your browser does not support the audio element.
-        </audio>
-        <button id="playPauseButton">❚❚</button>
-        <span id="musicStatus">Playing music</span>
-    </div>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <button id="themeToggle" class="theme-toggle">
-        ☀️
-    </button>
-    
-    <div class="container flex flex-col items-center space-y-6">
-        <h1 class="text-3xl font-extrabold text-center mb-0 leading-tight">Setup Generator</h1>
-        <p class="discord-text">
-            Join discord.gg/stando for commands and support with the script. | made by phowg/hayden
-        </p>
+        <header class="text-center mb-10 main-header">
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight">Stando Commands</h1>
+            <p class="mt-3 text-lg font-semibold tracking-wider">discord.gg/stando</p>
+            <p class="text-xs text-pink-300/70 mt-4">Made by @x67b on discord</p>
+        </header>
 
-        <div class="w-full">
-            <label for="modeSelect" class="block text-sm font-medium mb-2 text-center">Select Mode:</label>
-            <select id="modeSelect" class="select-field">
-                <option value="stando">Stando Generator</option>
-                <option value="sniper">Sniper Bot</option>
-            </select>
-        </div>
-        
-        <div class="w-full">
-            <label for="usernameInput" class="block text-sm font-medium mb-2 text-center">Owner's Username:</label>
-            <input
-                type="text"
-                id="usernameInput"
-                placeholder="Enter the owner's username..."
-                class="input-field"
-            />
+        <div class="mb-8 border-b border-gray-800">
+            <nav class="flex flex-wrap -mb-px justify-center" aria-label="Tabs">
+                <button class="tab-button active py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="summon">Summon & Vanish</button>
+                <button class="tab-button py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="combat">Combat</button>
+                <button class="tab-button py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="target">Targeting</button>
+                <button class="tab-button py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="utility">Utility</button>
+                <button class="tab-button py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="teleport">Teleport</button>
+                <button class="tab-button py-4 px-4 sm:px-6 font-medium text-sm sm:text-base" data-tab="misc">Misc</button>
+            </nav>
         </div>
 
-        <h2 class="text-2xl font-bold text-center mt-6 mb-4">Config</h2>
-        <div id="settingsContainer" class="w-full">
-        </div>
-        
-        <div id="sniperWhitelistContainer" class="w-full hidden">
-            <label for="whitelistInput" class="block text-sm font-medium mb-2 text-center">Whitelist (Comma-separated IDs):</label>
-            <input
-                type="text"
-                id="whitelistInput"
-                placeholder="e.g., 1234567, 7654321, 987654"
-                class="input-field"
-            />
-        </div>
+        <main>
+            <div id="summon" class="tab-content active">
+                <div class="command-card">
+                    <div class="command"><code>Summon</code><span class="command-desc">Summons your stand.</span></div>
+                    <div class="command"><code>s /e q /e q1 /e q2 /e q3</code><span class="command-desc">Alternative summon commands.</span></div>
+                    <div class="command"><code>Summon! / Summon1! / Summon2! / Summon3!</code><span class="command-desc">More summon variations.</span></div>
+                    <div class="command"><code>Killer Queen!</code><span class="command-desc">Summons Killer Queen.</span></div>
+                    <div class="command"><code>Star Platinum: The World</code><span class="command-desc">Summons Star Platinum: The World.</span></div>
+                    <div class="command"><code>Star Platinum : OverHeaven</code><span class="command-desc">Summons Star Platinum: Over Heaven.</span></div>
+                    <div class="command"><code>Star Platinum, Za Warudo!</code><span class="command-desc">Summons SP and activates The World.</span></div>
+                    <div class="command"><code>ZA WARUDO : OVER HEAVEN</code><span class="command-desc">Summons and activates The World Over Heaven.</span></div>
+                    <div class="command"><code>C moon! / D4C! / King Crimson! / Made In Heaven!</code><span class="command-desc">Summons specific stands.</span></div>
+                    <div class="command"><code>Vanish! / Desummon! /e w</code><span class="command-desc">Vanishes/desummons your stand.</span></div>
+                </div>
+            </div>
 
-        <button id="generateButton" class="generate-button w-full md:w-auto">
-            Generate Code
-        </button>
+            <div id="combat" class="tab-content">
+                 <div class="command-card space-y-8">
+                    <div>
+                        <h2 class="command-title">Basic Attacks</h2>
+                        <div class="info-box">You must be in the same crew as your stand for these to work. Use <code>Crew!</code> / <code>Uncrew!</code> if you have a valid group.</div>
+                        <div class="command"><code>Attack!</code><span class="command-desc">Toggles attack mode.</span></div>
+                        <div class="command"><code>Unattack!</code><span class="command-desc">Stops attacking.</span></div>
+                        <div class="command"><code>Stab!</code><span class="command-desc">Performs a stab attack.</span></div>
+                        <div class="command"><code>Unstab!</code><span class="command-desc">Stops stabbing (same as Unattack!).</span></div>
+                        <div class="command"><code>gkill!</code><span class="command-desc">Kills the target. Use Unattack! or re-summon to stop.</span></div>
+                    </div>
+                     <div>
+                        <h2 class="command-title">Attack Modes</h2>
+                        <div class="command"><code>Combat!</code><span class="command-desc">Default combat attack.</span></div>
+                        <div class="command"><code>Knife!</code><span class="command-desc">Knife attack.</span></div>
+                        <div class="command"><code>Pitch!</code><span class="command-desc">Pitchfork attack with a bigger hitbox.</span></div>
+                        <div class="command"><code>Sign!</code><span class="command-desc">Stop sign attack with a bigger hitbox.</span></div>
+                        <div class="command"><code>Whip!</code><span class="command-desc">Whip attack with a bigger hitbox.</span></div>
+                        <div class="command"><code>Hidden!</code><span class="command-desc">Stand attacks from under the target.</span></div>
+                        <div class="command"><code>Default!</code><span class="command-desc">Stand attacks the target from the sky.</span></div>
+                        <div class="command"><code>Drop!</code><span class="command-desc">Drops the current target.</span></div>
+                        <div class="command"><code>Throw!</code><span class="command-desc">Throws the current target.</span></div>
+                        <div class="command"><code>Barrage! / Muda! / Ora!</code><span class="command-desc">Attack rushes.</span></div>
+                    </div>
+                    <div>
+                         <h2 class="command-title">Gun Stuff</h2>
+                         <div class="command"><code>Gun!</code><span class="command-desc">Stand buys a gun and ammo.</span></div>
+                         <div class="command"><code>.rifle</code><span class="command-desc">Stand uses rifle.</span></div>
+                         <div class="command"><code>.lmg</code><span class="command-desc">Stand uses LMG.</span></div>
+                         <div class="command"><code>.aug</code><span class="command-desc">Stand uses AUG.</span></div>
+                    </div>
+                 </div>
+            </div>
+            
+            <div id="target" class="tab-content">
+                <div class="command-card">
+                    <div class="info-box">Usage Example: <code>.Knock [plr]</code> or <code>.Knock Ticxyy</code>. Works on display names and usernames.</div>
+                    <div class="command"><code>.Bring [user]</code><span class="command-desc">Brings target to you.</span></div>
+                    <div class="command"><code>.Smite [user]</code><span class="command-desc">Flings the target.</span></div>
+                    <div class="command"><code>.View [user]</code><span class="command-desc">Views the target.</span></div>
+                    <div class="command"><code>.Frame [user]</code><span class="command-desc">Makes the stand follow the target.</span></div>
+                    <div class="command"><code>.Bag [user]</code><span class="command-desc">Bags the player.</span></div>
+                    <div class="command"><code>.Arrest [user]</code><span class="command-desc">Arrests the target (stand must be police).</span></div>
+                    <div class="command"><code>.Knock [user]</code><span class="command-desc">Knocks the target (alias: .k).</span></div>
+                    <div class="command"><code>.Pull [user]</code><span class="command-desc">Snatches hair from the target.</span></div>
+                    <div class="command"><code>.Taser [user]</code><span class="command-desc">Tasers the target.</span></div>
+                    <div class="command"><code>.Autokill [user]</code><span class="command-desc">Loop kills the target.</span></div>
+                    <div class="command"><code>.Stomp [user]</code><span class="command-desc">Stomps the target.</span></div>
+                    <div class="command"><code>.Annoy [user]</code><span class="command-desc">Annoys the target.</span></div>
+                    <div class="command"><code>.Kannoy [user]</code><span class="command-desc">Annoys the target with a knife.</span></div>
+                    <div class="command"><code>.Gknock [user]</code><span class="command-desc">Knocks the target with a gun.</span></div>
+                    <div class="command"><code>.Gstomp [user]</code><span class="command-desc">Stomps the target with a gun.</span></div>
+                    <div class="command"><code>.Gauto [user]</code><span class="command-desc">Autokills the target with a gun.</span></div>
+                    <div class="command"><code>.Fstomp [user]</code><span class="command-desc">Stomps the target with flame.</span></div>
+                    <div class="command"><code>.Fknock [user]</code><span class="command-desc">Knocks the target with flame.</span></div>
+                    <div class="command"><code>.Rk [user]</code><span class="command-desc">Breaks the target's right leg.</span></div>
+                    <div class="command"><code>.Rm [user]</code><span class="command-desc">Destroys the target's body.</span></div>
+                </div>
+            </div>
 
-        <div class="w-full code-output-container">
-            <label for="codeOutput" class="block text-sm font-medium mb-2">Generated Code:</label>
-            <textarea
-                id="codeOutput"
-                readonly
-                class="code-output w-full"
-                rows="15"
-                placeholder="Your generated Lua script will appear here."
-            ></textarea>
-            <button id="copyButton" class="copy-button">Copy</button>
-        </div>
+            <div id="utility" class="tab-content">
+                <div class="command-card grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
+                    <div>
+                        <h2 class="command-title">Stand Control</h2>
+                        <div class="command"><code>.give [user]</code><span class="command-desc">Gives stand access until .return is used.</span></div>
+                        <div class="command"><code>.return</code><span class="command-desc">Returns the stand to you.</span></div>
+                        <div class="command"><code>Resolver! / Unresolver!</code><span class="command-desc">Toggles resolver ( Outdated/Not that good anymore )</span></div>
+                    </div>
+                     <div>
+                        <h2 class="command-title">Stand Positioning</h2>
+                        <div class="info-box">Usage: <code>Left! StandUser1</code></div>
+                        <div class="grid grid-cols-2 gap-2">
+                           <div class="command"><code>Left!</code></div> <div class="command"><code>Right!</code></div>
+                           <div class="command"><code>Back!</code></div> <div class="command"><code>Under!</code></div>
+                           <div class="command"><code>Alt!</code></div> <div class="command"><code>Upright!</code></div>
+                           <div class="command"><code>Upleft!</code></div> <div class="command"><code>Upcenter!</code></div>
+                        </div>
+                    </div>
+                     <div>
+                        <h2 class="command-title">Mask Stuff</h2>
+                        <div class="command"><code>Hide!</code><span class="command-desc">Stand buys a mask and hides display.</span></div>
+                        <p class="text-gray-400 my-3 font-semibold text-center">Change Mask In-Game:</p>
+                        <div class="command"><code>.surgeon / .paintball / .pumpkin</code></div>
+                        <div class="command"><code>.hockey / .ninja / .riot</code></div>
+                    </div>
+                    <div>
+                        <h2 class="command-title">Hover Animation</h2>
+                        <div class="command"><code>.Hover</code></div>
+                        <div class="command"><code>.FlyV1</code></div>
+                        <div class="command"><code>.FlyV2</code></div>
+                        <div class="command"><code>.Glide</code></div>
+                        <div class="command"><code>.Heaven</code></div>
+                    </div>
+                    <div>
+                        <h2 class="command-title">DHC Commands</h2>
+                        <div class="command"><code>Autodrop! / Unautodrop!</code><span class="command-desc">Toggles dropcash.</span></div>
+                        <div class="command"><code>Wallet! / Unwallet!</code><span class="command-desc">Toggles equipping wallet.</span></div>
+                        <div class="command"><code>Caura! / Uncaura!</code><span class="command-desc">Toggles cash aura.</span></div>
+                        <div class="command"><code>Dcash</code><span class="command-desc">Stand drops 15k or max possible DHC.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="teleport" class="tab-content">
+                <div class="command-card">
+                    <div class="info-box">Example: <code>goto! bank</code>. Teleports the owner.</div>
+                    <p class="text-gray-300 mb-4 font-semibold text-lg text-center">Teleport Commands:</p>
+                    <div class="flex justify-center gap-4">
+                       <div class="command flex-1"><code>tp! [place] / to! [place] / goto! [place]</code></div>
+                       <div class="command flex-1"><code>.tp [place] / .to [place] / .goto [place]</code></div>
+                    </div>
+                    <p class="text-gray-300 mt-8 mb-3 font-semibold text-lg text-center">All Locations:</p>
+                    <p class="text-gray-400 text-base leading-relaxed text-center bg-gray-900/50 p-4 rounded-lg">
+                        bank, Roof, club, casino, ufo, mil, school, shop1, shop2, rev, db, pool, armor, subway, subway1, sewer, wheel, safe1, safe2, safe3, safe4, safe5, basketball, boxing, bull
+                    </p>
+                </div>
+            </div>
+
+            <div id="misc" class="tab-content">
+                 <div class="command-card grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="command"><code>Ac!</code><span class="command-desc">Autocall owner's phone.</span></div>
+                    <div class="command"><code>Rejoin! / rj!</code><span class="command-desc">Rejoins the game.</span></div>
+                    <div class="command"><code>Leave!</code><span class="command-desc">Leaves the game.</span></div>
+                    <div class="command"><code>Autosave! / Unautosave!</code><span class="command-desc">Saves you when knocked.</span></div>
+                    <div class="command"><code>Re!</code><span class="command-desc">Resets the stand.</span></div>
+                    <div class="command"><code>Heal!</code><span class="command-desc">Heals the stand.</span></div>
+                    <div class="command"><code>Song!</code><span class="command-desc">Plays custom song from settings.</span></div>
+                    <div class="command"><code>StopAudio!</code><span class="command-desc">Stops music.</span></div>
+                    <div class="command"><code>Stop! / walk!</code><span class="command-desc">Pauses the stand.</span></div>
+                    <div class="command"><code>Crew! / Uncrew!</code><span class="command-desc">Joins/leaves the crew.</span></div>
+                    <div class="command"><code>Moveset1 / Moveset2</code><span class="command-desc">Changes moveset (Default/Boxing).</span></div>
+                    <div class="command"><code>Weld!</code><span class="command-desc">Makes stand invisible (may fail).</span></div>
+                    <div class="command"><code>Unblock!</code><span class="command-desc">Breaks the weld.</span></div>
+                    <div class="command"><code>Boxing!</code><span class="command-desc">Starts box farming.</span></div>
+                    <div class="command"><code>Pose1 / Pose2 / Pose3</code><span class="command-desc">Performs a pose.</span></div>
+                    <div class="command"><code>Police!</code><span class="command-desc">Shows join info.</span></div>
+                    <div class="command"><code>Autoweight!</code></div>
+                    <div class="command"><code>Lettuce! / Unlettuce!</code></div>
+                    <div class="command"><code>Lowgfx!</code></div>
+                    <div class="command"><code>Redeem!</code><span class="command-desc">Redeems Da Hood codes.</span></div>
+                    <div class="command"><code>Power!</code><span class="command-desc">Kick Reach (Patched).</span></div>
+                    <div class="command"><code>Sneak!</code><span class="command-desc">Reach (Patched).</span></div>
+                    <div class="command"><code>Unjail!</code><span class="command-desc">Unjails the stand.</span></div>
+                    <div class="command"><code>Altmode! (alt)</code><span class="command-desc">Usage: Altmode! SecondStandUser.</span></div>
+                    <div class="command"><code>Vhc!</code><span class="command-desc">Spawns a vehicle.</span></div>
+                    <div class="command"><code>.Blow [Target]</code><span class="command-desc">Performs action.</span></div>
+                    <div class="command"><code>.Doggy [Target]</code><span class="command-desc">Performs action.</span></div>
+                </div>
+            </div>
+        </main>
+
     </div>
 
     <script>
-        window.onload = function() {
-            const preloader = document.getElementById('preloader');
-            document.body.classList.add('loaded');
-            setTimeout(() => {
-                if (preloader) {
-                    preloader.style.display = 'none';
-                }
-            }, 800);
-        };
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const usernameInput = document.getElementById('usernameInput');
-            const generateButton = document.getElementById('generateButton');
-            const codeOutput = document.getElementById('codeOutput');
-            const themeToggle = document.getElementById('themeToggle');
-            const copyButton = document.getElementById('copyButton');
-            const settingsContainer = document.getElementById('settingsContainer');
-            const modeSelect = document.getElementById('modeSelect');
-            const whitelistInput = document.getElementById('whitelistInput');
-            const sniperWhitelistContainer = document.getElementById('sniperWhitelistContainer');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
 
-            const backgroundMusic = document.getElementById('backgroundMusic');
-            const playPauseButton = document.getElementById('playPauseButton');
-            const musicStatus = document.getElementById('musicStatus');
-            const body = document.body;
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
 
-            let isGenerating = false;
-            let generateAnimationInterval;
-            const originalGenerateButtonText = generateButton.textContent;
-
-            const standoConfigs = {
-                'General Settings': {
-                    'Fps': { type: 'number', default: 45 },
-                    'Msg': { type: 'string', default: 'Yare Yare Daze.' },
-                    'CrewID': { type: 'number', default: 32570691 },
-                    'ChatCmds': { type: 'boolean', default: true },
-                    'CustomName': { type: 'string', default: 'Owner' },
-                    'Hidescreen': { type: 'boolean', default: false },
-                    'LowGraphics': { type: 'boolean', default: false },
-                    'CustomPrefix': { type: 'select', default: '.', options: ['!', '/', '.', '?', '>', '<', '$', ';', ':'] },
-                    'AutoSaveLocation': { type: 'select', default: 'Downhill_Rooftop', options: ['Downhill_Rooftop', 'Uphill_Rooftop', 'DA_FURNITURE'] }
-                },
-                'Combat & Attack': {
-                    'Attack': { type: 'select', default: 'Heavy', options: ['Heavy', 'Light'] },
-                    'GunMode': { type: 'select', default: 'Aug', options: ['LMG', 'Rifle', 'Aug'] },
-                    'Position': { type: 'select', default: 'Back', options: ['Back', 'Left', 'Right', 'Mid', 'UpMid', 'UpLeft', 'Walk'] },
-                    'Resolver': { type: 'boolean', default: false, label: 'Resolver (Anti-Lock)' },
-                    'AttackMode': { type: 'select', default: 'Sky', options: ['Sky', 'Under'] },
-                    'AutoPrediction': { type: 'boolean', default: false },
-                    'AttackDistance': { type: 'number', default: 75 },
-                    'AttackPrediction': { type: 'number', default: 0.34, step: 0.01 },
-                    'AttackAutoPrediction': { type: 'number', default: 0.23, step: 0.01 },
-                    'AntiStomp': { type: 'boolean', default: true }
-                },
-                'Stand & Appearance': {
-                    'TPMode': { type: 'select', default: 'Cart', options: ['Knock', 'Cart'] },
-                    'AutoMask': { type: 'boolean', default: true },
-                    'MaskMode': { type: 'select', default: 'Riot', options: ['Surgeon', 'Paintball', 'Skull', 'Pumpkin', 'Hockey', 'Ninja', 'Riot', 'Breathing'] },
-                    'StandMode': {
-                        type: 'select',
-                        default: 'Star Platinum : OverHeaven',
-                        options: [
-                            'Star Platinum : OverHeaven', 'Star Platinum: The World',
-                            'Star Platinum, Za Warudo!', 'TheWorld', 'Cmoon',
-                            'King Crimson', 'Killer Queen', 'MIH', 'D4C'
-                        ]
-                    },
-                    'Smoothing': { type: 'boolean', default: false },
-                    'SummonPoses': { type: 'select', default: 'Pose3', options: ['false', 'Pose1', 'Pose2', 'Pose3'] },
-                    'CustomSummon': { type: 'string', default: 'Summon!' }
-                },
-                'Sound Settings': {
-                    'Sounds': { type: 'boolean', default: true },
-                    'CustomSong': { type: 'number', default: 123456 },
-                    'SummonMusic': { type: 'boolean', default: true },
-                    'SummonMusicID': { type: 'string', default: 'Default' }
-                }
-            };
-
-            const sniperConfigs = {
-                'Main Settings': {
-                    'Guns': { type: 'string', default: 'Rifle, Flintlock' },
-                    'Strafe': { type: 'select', default: 'Normal', options: ['Normal', 'Random'] },
-                    'Void': { type: 'select', default: 'Unhittable', options: ['Unhittable', 'UpDown', 'Meta', 'Lerp', 'Custom'] },
-                    'Lerp': { type: 'number', default: 0.1, step: 0.01 },
-                    'CFrame': { type: 'string', default: '0, 1, 0' },
-                    'Prediction': { type: 'number', default: 1, step: 0.1 },
-                    'Multiplier': { type: 'number', default: 3 },
-                    'StompHeight': { type: 'number', default: 5 },
-                    'RandomStompOffset': { type: 'number', default: 0 },
-                    'SpareAmmo': { type: 'number', default: 8 },
-                    'ForceAmmo': { type: 'number', default: 4 },
-                    'CrewID': { type: 'number', default: 32570691 },
-                    'AntiStomp': { type: 'boolean', default: true },
-                    'LowGraphic': { type: 'boolean', default: false },
-                    'HideScreen': { type: 'boolean', default: true },
-                    'CustomPrefix': { type: 'select', default: '!', options: ['!', '/', '.', '?', '>', '<', '$', ';', ':'] },
-                    'Fpscap': { type: 'number', default: 150 }
-                }
-            };
-
-            const renderConfigInputs = (configs) => {
-                settingsContainer.innerHTML = '';
-                for (const categoryName in configs) {
-                    const categoryData = configs[categoryName];
-
-                    const categoryDiv = document.createElement('div');
-                    categoryDiv.className = 'settings-category';
-
-                    const categoryHeader = document.createElement('div');
-                    categoryHeader.className = 'category-header';
-                    categoryHeader.innerHTML = `<span>${categoryName}</span><span class="arrow-icon">▶</span>`;
-                    categoryDiv.appendChild(categoryHeader);
-
-                    const categoryContent = document.createElement('div');
-                    categoryContent.className = 'category-content';
-                    categoryDiv.appendChild(categoryContent);
-
-                    categoryHeader.addEventListener('click', () => {
-                        categoryContent.classList.toggle('expanded');
-                        categoryHeader.querySelector('.arrow-icon').classList.toggle('rotated');
-                    });
-
-                    for (const key in categoryData) {
-                        const config = categoryData[key];
-                        const settingItem = document.createElement('div');
-                        settingItem.className = 'setting-item';
-
-                        const label = document.createElement('label');
-                        label.htmlFor = `config-${key}`;
-                        label.className = 'setting-label';
-                        label.textContent = config.label || (key.replace(/([A-Z])/g, ' $1').trim() + ':');
-
-                        let inputElement;
-
-                        if (config.type === 'boolean') {
-                            inputElement = document.createElement('select');
-                            inputElement.id = `config-${key}`;
-                            inputElement.className = 'select-field';
-                            ['true', 'false'].forEach(optionValue => {
-                                const option = document.createElement('option');
-                                option.value = optionValue;
-                                option.textContent = optionValue;
-                                if (String(config.default) === optionValue) {
-                                    option.selected = true;
-                                }
-                                inputElement.appendChild(option);
-                            });
-                        } else if (config.type === 'select') {
-                            inputElement = document.createElement('select');
-                            inputElement.id = `config-${key}`;
-                            inputElement.className = 'select-field';
-                            config.options.forEach(optionValue => {
-                                const option = document.createElement('option');
-                                option.value = optionValue;
-                                option.textContent = optionValue;
-                                if (config.default === optionValue) {
-                                    option.selected = true;
-                                }
-                                inputElement.appendChild(option);
-                            });
-                        } else if (config.type === 'number') {
-                            inputElement = document.createElement('input');
-                            inputElement.type = 'number';
-                            inputElement.id = `config-${key}`;
-                            inputElement.className = 'input-field';
-                            inputElement.value = config.default;
-                            if (config.step) {
-                                inputElement.step = config.step;
-                            }
-                        } else {
-                            inputElement = document.createElement('input');
-                            inputElement.type = 'text';
-                            inputElement.id = `config-${key}`;
-                            inputElement.className = 'input-field';
-                            inputElement.value = config.default;
-                        }
-
-                        settingItem.appendChild(label);
-                        settingItem.appendChild(inputElement);
-                        categoryContent.appendChild(settingItem);
-                    }
-                    settingsContainer.appendChild(categoryDiv);
-                }
-            };
-            
-            const updateUIForMode = (mode) => {
-                if (mode === 'stando') {
-                    renderConfigInputs(standoConfigs);
-                    sniperWhitelistContainer.classList.add('hidden');
-                } else if (mode === 'sniper') {
-                    renderConfigInputs(sniperConfigs);
-                    sniperWhitelistContainer.classList.remove('hidden');
-                }
-                codeOutput.value = '';
-                adjustTextareaHeight(codeOutput);
-            };
-
-            modeSelect.addEventListener('change', (event) => {
-                updateUIForMode(event.target.value);
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
             });
-
-            const adjustTextareaHeight = (element) => {
-                element.style.height = 'auto';
-                element.style.height = (element.scrollHeight) + 'px';
-            };
-
-            const typeText = (element, text, delay = 1) => {
-                return new Promise(resolve => {
-                    let i = 0;
-                    element.value = '';
-                    adjustTextareaHeight(element);
-                    const interval = setInterval(() => {
-                        if (i < text.length) {
-                            element.value += text.charAt(i);
-                            adjustTextareaHeight(element);
-                            element.scrollTop = element.scrollHeight;
-                            i++;
-                        } else {
-                            clearInterval(interval);
-                            resolve();
-                        }
-                    }, delay);
-                });
-            };
-
-            const currentTheme = localStorage.getItem('theme');
-            if (currentTheme === 'light') {
-                body.classList.add('light-mode');
-                themeToggle.textContent = '🌙';
-            } else {
-                themeToggle.textContent = '☀️';
-            }
-
-            themeToggle.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                if (body.classList.contains('light-mode')) {
-                    localStorage.setItem('theme', 'light');
-                    themeToggle.innerHTML = '&#x1F319;'; // Moon emoji
-                } else {
-                    localStorage.setItem('theme', 'dark');
-                    themeToggle.innerHTML = '&#x2600;&#xFE0F;'; // Sun emoji
-                }
-            });
-
-            const validateAndGenerate = async () => {
-                const username = usernameInput.value.trim();
-                if (!username) {
-                    generateButton.textContent = 'ENTER A VALID USERNAME';
-                    usernameInput.focus();
-                    setTimeout(() => {
-                        generateButton.textContent = originalGenerateButtonText;
-                    }, 2000);
-                    return;
-                }
-
-                if (isGenerating) return;
-
-                isGenerating = true;
-                generateButton.disabled = true;
-
-                let dotCount = 0;
-                generateAnimationInterval = setInterval(() => {
-                    dotCount = (dotCount % 4) + 1;
-                    generateButton.textContent = 'Generating' + '.'.repeat(dotCount);
-                }, 300);
-                
-                const mode = modeSelect.value;
-                let generatedCode = '';
-                
-                if (mode === 'stando') {
-                    let ownerLine = `getgenv().Owner = "${username}"`;
-                    let configString = [];
-                    for (const categoryName in standoConfigs) {
-                        const categoryData = standoConfigs[categoryName];
-                        for (const key in categoryData) {
-                            const config = categoryData[key];
-                            const configElement = document.getElementById(`config-${key}`);
-                            let value = configElement.value;
-
-                            if (config.type === 'boolean') {
-                                value = value.toLowerCase();
-                            } else if (config.type === 'string' || config.type === 'select') {
-                                value = `'${value}'`;
-                            }
-                            configString.push(`['${key}'] = ${value}`);
-                        }
-                    }
-
-                    generatedCode = `--stando setup
-getgenv()._="Join discord.gg/msgabv2t9Q | discord.gg/stando to get latest update ok bai >.+ | If you pay for this script you get scammed, this script is completely free ok"
-${ownerLine}
-getgenv().Configuration = {
-    ${configString.join(',\n    ')}
-}
-loadstring(game:HttpGet("https://xk5ng.github.io/V5.0"))()`;
-
-                } else if (mode === 'sniper') {
-                    const ownerLine = `getgenv().Owner = "${username}"`;
-                    const whitelistValue = whitelistInput.value.trim();
-                    let whitelistArray = [];
-                    if (whitelistValue) {
-                        whitelistArray = whitelistValue.split(',').map(id => id.trim()).filter(id => id.length > 0);
-                    }
-                    
-                    const whitelistString = whitelistArray.length > 0 ? whitelistArray.join(',\n    ') : '';
-                     let whitelistTable = '';
-                    if (whitelistArray.length > 0) {
-                        whitelistTable = `getgenv().Whitelist = {\n    ${whitelistString}\n}\n\n`;
-                    }
-
-                    let configString = [];
-                    const configData = sniperConfigs['Main Settings'];
-                    for (const key in configData) {
-                        const config = configData[key];
-                        const configElement = document.getElementById(`config-${key}`);
-                        let value = configElement.value;
-                        
-                        if (key === 'Guns' || key === 'CFrame') {
-                            const itemArray = value.split(',').map(item => `"${item.trim()}"`).join(', ');
-                             value = `{${itemArray}}`;
-                        } else if (config.type === 'boolean') {
-                             value = value.toLowerCase();
-                        } else if (config.type === 'string' || config.type === 'select') {
-                            value = `"${value}"`;
-                        }
-                        configString.push(`['${key}'] = ${value}`);
-                    }
-                    
-                    generatedCode = `-- Sniper Bot Setup
-getgenv()._="Join discord.gg/msgabv2t9Q | discord.gg/stando to get latest update ok bai | If you pay for this script you get scammed, this script is completely free ok"
---[[
-
-To get started in "getgenv().Owner" put the username you want to control the alt.
-
-!! \\ MAKE SURE THE LocalPlayer AND LocalPlayer ACCOUNT ARE IN SAME SERVER // !!
-
---// Example \\
-Before --> getgenv().Owner = "OWNER_USERNAME_HERE"
-After  --> getgenv().Owner = "XK5NG"
-
-^^ --> This is just the example don't put the username here]]
-
-${ownerLine}
-${whitelistTable}getgenv().Configuration = {
-    ${configString.join(',\n    ')}
-}
-loadstring(game:HttpGet("https://xk5ng.github.io/Sniper-Bot-Rewrite"))()`
-                }
-
-                clearInterval(generateAnimationInterval);
-                await typeText(codeOutput, generatedCode);
-                generateButton.textContent = 'Generation Complete!';
-                isGenerating = false;
-                
-                setTimeout(() => {
-                    generateButton.disabled = false;
-                    generateButton.textContent = originalGenerateButtonText;
-                }, 2500);
-            };
-
-            generateButton.addEventListener('click', validateAndGenerate);
-            
-            copyButton.addEventListener('click', () => {
-                codeOutput.select();
-                document.execCommand('copy');
-                copyButton.textContent = 'Copied!';
-                setTimeout(() => {
-                    copyButton.textContent = 'Copy';
-                }, 1500);
-            });
-
-            playPauseButton.addEventListener('click', () => {
-                if (backgroundMusic.paused) {
-                    backgroundMusic.play().catch(e => console.log("Audio play failed: ", e));
-                    playPauseButton.textContent = '❚❚';
-                    musicStatus.textContent = 'Playing music';
-                } else {
-                    backgroundMusic.pause();
-                    playPauseButton.textContent = '▶';
-                    musicStatus.textContent = 'Music paused';
-                }
-            });
-            
-            // yes
-            updateUIForMode('stando');
         });
     </script>
 </body>
 </html>
+
