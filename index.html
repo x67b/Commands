@@ -21,14 +21,19 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark-purple);
-            background: linear-gradient(-45deg, var(--bg-dark-purple), var(--bg-light-purple), var(--card-purple), var(--border-purple));
-            background-size: 400% 400%;
-            animation: animated-gradient 15s ease infinite;
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            margin: 0;
+        }
+        canvas#bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
         }
         body::before {
             content: '';
@@ -38,7 +43,7 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at 5% 10%, rgba(244, 114, 182, 0.1), transparent 50%),
-                         radial-gradient(circle at 95% 90%, rgba(163, 156, 185, 0.1), transparent 50%);
+                        radial-gradient(circle at 95% 90%, rgba(163, 156, 185, 0.1), transparent 50%);
             pointer-events: none;
             z-index: -1;
         }
@@ -106,7 +111,28 @@
             transform: scale(1.03);
             border-color: var(--accent-pink);
         }
-        .command code { color: #f5d0fe; font-weight: 500; font-size: 0.9rem; }
+        .command code { 
+            color: #f5d0fe; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .script-code {
+            background-color: #3b1c5f;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            width: 100%;
+            text-align: center;
+        }
+        .script-code code {
+            color: #f5d0fe;
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
         .info-box {
             background-color: rgba(244, 114, 182, 0.1);
             border-left: 4px solid var(--accent-pink);
@@ -124,10 +150,6 @@
             border: 1px solid var(--border-purple);
             box-shadow: 0 0 30px var(--glow-pink), 0 0 50px rgba(0,0,0,0.7);
             animation: modal-bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes animated-gradient {
-            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); }
@@ -150,7 +172,7 @@
     </style>
 </head>
 <body class="antialiased">
-
+    <canvas id="bgCanvas"></canvas>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header class="text-center mb-10 main-header">
             <h1 class="text-4xl sm:text-5xl font-bold tracking-tight">Stando Commands</h1>
@@ -256,9 +278,9 @@
                     <div>
                         <h3 class="font-semibold text-lg mb-4">Stand Control</h3>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                           <button class="command" data-name=".give [user]" data-desc="Gives stand access until .return is used." data-usage=".give [username]"><code>.give [user]</code></button>
-                           <button class="command" data-name=".return" data-desc="Returns the stand to you." data-usage=".return"><code>.return</code></button>
-                           <button class="command" data-name="Resolver! / Unresolver!" data-desc="Toggles resolver ( Outdated/Not that good anymore )" data-usage="Resolver!"><code>Resolver!</code></button>
+                            <button class="command" data-name=".give [user]" data-desc="Gives stand access until .return is used." data-usage=".give [username]"><code>.give [user]</code></button>
+                            <button class="command" data-name=".return" data-desc="Returns the stand to you." data-usage=".return"><code>.return</code></button>
+                            <button class="command" data-name="Resolver! / Unresolver!" data-desc="Toggles resolver (Outdated/Not that good anymore)" data-usage="Resolver!"><code>Resolver!</code></button>
                         </div>
                     </div>
                     <div>
@@ -298,7 +320,6 @@
                     </div>
                 </div>
 
-                <!-- Teleport -->
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Teleport</h2>
                     <div class="info-box">Example: <code>goto! bank</code>. Teleports the owner.</div>
@@ -308,7 +329,6 @@
                     </p>
                 </div>
 
-                <!-- Misc -->
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Misc</h2>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -343,29 +363,26 @@
                 </div>
             </div>
 
-    <div id="phowgs-stuff" class="tab-content">
-        <div class="command-card space-y-4">
-            <h2 class="command-title">Phowg's Stuff</h2>
-            <p class="text-gray-300">
-                A collection of scripts and tools created by Phowg to enhance your gaming experience.
-            </p>
-            <div class="info-box">
-                <h3 class="font-semibold text-lg mb-2">Auto Lettuce Script</h3>
-                <p class="text-gray-300 mb-4">
-                    This is an auto lettuce script I made. To use it, go anywhere on the map and execute the script. It should take around 3 minutes, depending on your character's size. This script helps with autofarm getting stuck (issue fixed, pending autofarm update).
-                </p>
-                <div class="command">
-                    <code>loadstring(game:HttpGet("https://raw.githubusercontent.com/phowg-host/auto_lettuce.lua/refs/heads/main/%40x67bondc"))()</code>
+            <div id="phowgs-stuff" class="tab-content">
+                <div class="command-card space-y-4">
+                    <h2 class="command-title">Phowg's Stuff</h2>
+                    <div class="info-box">
+                        <h3 class="font-semibold text-lg mb-2">Auto Lettuce Script</h3>
+                        <p class="text-gray-300 mb-4">
+                            autofarm script execute it, and it will teleprot u to a safe place wait about 2-5 minutes and u will be fully skinny this is useful for fixing the autofarm getting stuck at lmg spot if u do use it otherwise u can just use auto skinny in general.
+                        </p>
+                        <div class="script-code">
+                            <code id="auto-lettuce-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/phowg-host/auto_lettuce.lua/refs/heads/main/%40x67bondc"))()</code>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside mt-4 space-y-2 text-gray-400">
+                        <li>discord ; <a href="https://discord.gg/stando" class="text-pink-400 hover:text-pink-500">discord.gg/stando</a></li>
+                    </ul>
                 </div>
             </div>
-            <ul class="list-disc list-inside mt-4 space-y-2 text-gray-400">
-                <li>My awesome project</li>
-                <li>Link to my Discord: <a href="https://discord.gg/stando" class="text-pink-400 hover:text-pink-500">discord.gg/stando</a></li>
-                <li>My favorite commands</li>
-            </ul>
-        </div>
-    </div>
         </main>
+    </div>
+
     <div id="commandModal" class="fixed inset-0 z-50 items-center justify-center hidden" style="background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px);">
         <div class="modal-content relative w-full max-w-md p-6 rounded-lg m-4">
             <h3 id="modal-title" class="text-2xl font-bold text-pink-400 font-orbitron"></h3>
@@ -379,6 +396,47 @@
     </div>
 
     <script>
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let time = 0;
+        const colors = [
+            [26, 9, 42],   // --bg-dark-purple: #1a092a
+            [59, 7, 100],  // --bg-light-purple: #3b0764
+            [42, 17, 66],  // --card-purple: #2a1142
+            [76, 29, 149]  // --border-purple: #4c1d95
+        ];
+
+        function interpolateColor(color1, color2, factor) {
+            return color1.map((start, i) => Math.round(start + (color2[i] - start) * factor));
+        }
+
+        function drawGradient() {
+            const t = (Math.sin(time * 0.05) + 1) / 2;
+            const color1 = interpolateColor(colors[0], colors[1], t);
+            const color2 = interpolateColor(colors[2], colors[3], t);
+
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, `rgb(${color1[0]}, ${color1[1]}, ${color1[2]})`);
+            gradient.addColorStop(1, `rgb(${color2[0]}, ${color2[1]}, ${color2[2]})`);
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            time++;
+            requestAnimationFrame(drawGradient);
+        }
+
+        drawGradient();
+
         document.addEventListener('DOMContentLoaded', () => {
             const tabs = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
