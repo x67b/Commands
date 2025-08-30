@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stando Commands</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,11 +22,25 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark-purple);
-            background: linear-gradient(-45deg, #1a092a, #3b0764, #2a1142, #4c1d95);
+            background: linear-gradient(-45deg, var(--bg-dark-purple), var(--bg-light-purple), var(--card-purple), var(--border-purple));
             background-size: 400% 400%;
             animation: animated-gradient 15s ease infinite;
             color: var(--text-light);
+            min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 5% 10%, rgba(244, 114, 182, 0.1), transparent 50%),
+                        radial-gradient(circle at 95% 90%, rgba(163, 156, 185, 0.1), transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
         .main-header {
             animation: fadeInDown 0.8s ease-out, float 6s ease-in-out infinite;
@@ -37,9 +51,9 @@
             text-shadow: 0 0 8px var(--glow-pink), 0 0 12px var(--glow-pink), 0 0 20px var(--glow-pink);
         }
         .main-header p {
-             color: var(--accent-pink);
-             opacity: 0.9;
-             text-shadow: 0 0 5px var(--glow-pink);
+            color: var(--accent-pink);
+            opacity: 0.9;
+            text-shadow: 0 0 5px var(--glow-pink);
         }
         .tab-button {
             transition: all 0.3s ease;
@@ -57,7 +71,10 @@
             transform: translateY(-2px);
             text-shadow: 0 0 8px var(--glow-pink);
         }
-        .tab-content { display: none; animation: fadeInUp 0.6s ease-out; }
+        .tab-content { 
+            display: none; 
+            animation: fadeIn 0.8s ease-out; 
+        }
         .tab-content.active { display: block; }
         .command-card {
             background-color: var(--card-purple);
@@ -65,6 +82,7 @@
             border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .command-title {
             color: var(--text-light);
@@ -96,13 +114,16 @@
             padding: 1rem;
             margin-bottom: 1.5rem;
             border-radius: 0.5rem;
+            animation: fadeInUp 0.6s ease-out;
         }
-        #commandModal { transition: opacity 0.3s ease; }
+        #commandModal { 
+            transition: opacity 0.3s ease; 
+        }
         .modal-content {
             background-color: var(--card-purple);
             border: 1px solid var(--border-purple);
             box-shadow: 0 0 30px var(--glow-pink), 0 0 50px rgba(0,0,0,0.7);
-            animation: modal-scale-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: modal-bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes animated-gradient {
@@ -114,11 +135,17 @@
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes float {
-            0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); }
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
         }
-        @keyframes modal-scale-in {
-            from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes float {
+            0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); }
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes modal-bounce-in {
+            from { opacity: 0; transform: scale(0.7) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
@@ -164,7 +191,7 @@
             </div>
 
             <div id="combat" class="tab-content">
-                 <div class="command-card space-y-8">
+                <div class="command-card space-y-8">
                     <div>
                         <h2 class="command-title">Basic Attacks</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -175,7 +202,7 @@
                             <button class="command" data-name="gkill!" data-desc="Kills the target. Use Unattack! or re-summon to stop." data-usage="gkill!"><code>gkill!</code></button>
                         </div>
                     </div>
-                     <div>
+                    <div>
                         <h2 class="command-title">Attack Modes</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             <button class="command" data-name="Combat!" data-desc="Default combat attack." data-usage="Combat!"><code>Combat!</code></button>
@@ -191,21 +218,21 @@
                         </div>
                     </div>
                     <div>
-                         <h2 class="command-title">Gun Stuff</h2>
-                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <h2 class="command-title">Gun Stuff</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <button class="command" data-name="Gun!" data-desc="Stand buys a gun and ammo." data-usage="Gun!"><code>Gun!</code></button>
                             <button class="command" data-name=".rifle" data-desc="Stand uses rifle." data-usage=".rifle"><code>.rifle</code></button>
                             <button class="command" data-name=".lmg" data-desc="Stand uses LMG." data-usage=".lmg"><code>.lmg</code></button>
                             <button class="command" data-name=".aug" data-desc="Stand uses AUG." data-usage=".aug"><code>.aug</code></button>
                         </div>
                     </div>
-                 </div>
+                </div>
             </div>
             
             <div id="target" class="tab-content">
                 <div class="command-card">
                     <div class="info-box">Usage Example: <code>.Knock [plr]</code> or <code>.Knock Ticxyy</code>. Works on display names and usernames.</div>
-                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <button class="command" data-name=".Bring [user]" data-desc="Brings target to you." data-usage=".Bring [username]"><code>.Bring</code></button>
                         <button class="command" data-name=".Smite [user]" data-desc="Flings the target." data-usage=".Smite [username]"><code>.Smite</code></button>
                         <button class="command" data-name=".View [user]" data-desc="Views the target." data-usage=".View [username]"><code>.View</code></button>
@@ -240,7 +267,7 @@
                            <button class="command" data-name="Resolver! / Unresolver!" data-desc="Toggles resolver ( Outdated/Not that good anymore )" data-usage="Resolver!"><code>Resolver!</code></button>
                         </div>
                     </div>
-                     <div>
+                    <div>
                         <h2 class="command-title">Stand Positioning</h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                            <button class="command" data-name="Left!" data-desc="Positions the stand." data-usage="Left! StandUser1"><code>Left!</code></button>
@@ -253,7 +280,7 @@
                            <button class="command" data-name="Upcenter!" data-desc="Positions the stand." data-usage="Upcenter! StandUser1"><code>Upcenter!</code></button>
                         </div>
                     </div>
-                     <div>
+                    <div>
                         <h2 class="command-title">Mask Stuff</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <button class="command" data-name="Hide!" data-desc="Stand buys a mask and hides display." data-usage="Hide!"><code>Hide!</code></button>
@@ -265,7 +292,7 @@
                             <button class="command" data-name=".riot" data-desc="Changes mask to Riot." data-usage=".riot"><code>.riot</code></button>
                         </div>
                     </div>
-                     <div>
+                    <div>
                         <h2 class="command-title">Hover Animation</h2>
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                            <button class="command" data-name=".Hover" data-desc="Changes hover animation." data-usage=".Hover"><code>.Hover</code></button>
@@ -289,7 +316,7 @@
             </div>
 
             <div id="misc" class="tab-content">
-                 <div class="command-card grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="command-card grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <button class="command" data-name="Ac!" data-desc="Autocall owner's phone." data-usage="Ac!"><code>Ac!</code></button>
                     <button class="command" data-name="Rejoin! / rj!" data-desc="Rejoins the game." data-usage="Rejoin!"><code>Rejoin!</code></button>
                     <button class="command" data-name="Leave!" data-desc="Leaves the game." data-usage="Leave!"><code>Leave!</code></button>
@@ -383,4 +410,3 @@
     </script>
 </body>
 </html>
-
