@@ -76,9 +76,9 @@
             transform: translateY(-2px);
             text-shadow: 0 0 8px var(--glow-pink);
         }
-        .tab-content { 
-            display: none; 
-            animation: fadeIn 0.8s ease-out; 
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.8s ease-out;
         }
         .tab-content.active { display: block; }
         .command-card {
@@ -111,10 +111,10 @@
             transform: scale(1.03);
             border-color: var(--accent-pink);
         }
-        .command code { 
-            color: #f5d0fe; 
-            font-weight: 500; 
-            font-size: 0.9rem; 
+        .command code {
+            color: #f5d0fe;
+            font-weight: 500;
+            font-size: 0.9rem;
             white-space: pre-wrap;
             word-break: break-all;
         }
@@ -142,14 +142,44 @@
             border-radius: 0.5rem;
             animation: fadeInUp 0.6s ease-out;
         }
-        #commandModal { 
-            transition: opacity 0.3s ease; 
+        #commandModal {
+            transition: opacity 0.3s ease;
         }
         .modal-content {
             background-color: var(--card-purple);
             border: 1px solid var(--border-purple);
             box-shadow: 0 0 30px var(--glow-pink), 0 0 50px rgba(0,0,0,0.7);
             animation: modal-bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeOut 1s forwards;
+            animation-delay: 1s;
+        }
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #f472b6;
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; display: none; }
         }
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); }
@@ -172,6 +202,9 @@
     </style>
 </head>
 <body class="antialiased">
+    <div id="loading-overlay">
+        <div class="loader"></div>
+    </div>
     <canvas id="bgCanvas"></canvas>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <header class="text-center mb-10 main-header">
@@ -179,16 +212,16 @@
             <p class="mt-3 text-lg font-semibold tracking-wider">discord.gg/stando</p>
             <p class="text-xs text-pink-300/70 mt-4">Made by @x67b on discord</p>
         </header>
-
         <div class="mb-8 border-b border-gray-800">
             <nav class="flex flex-wrap -mb-px justify-center" aria-label="Tabs">
-                <button class="tab-button active py-4 px-4 sm:px-6" data-tab="commands">Commands</button>
+                <button class="tab-button active py-4 px-4 sm:px-6" data-tab="stand-cmds">Stand Cmds</button>
+                <button class="tab-button py-4 px-4 sm:px-6" data-tab="sniperbot-cmds">SniperBot Cmds</button>
+                <button class="tab-button py-4 px-4 sm:px-6" data-tab="paid-commands">Paid Commands</button>
                 <button class="tab-button py-4 px-4 sm:px-6" data-tab="phowgs-stuff">Phowg's Stuff</button>
             </nav>
         </div>
-
         <main>
-            <div id="commands" class="tab-content active">
+            <div id="stand-cmds" class="tab-content active">
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Summon & Vanish</h2>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -207,7 +240,6 @@
                         <button class="command" data-name="Vanish!" data-desc="Vanishes/desummons your stand." data-usage="Vanish!"><code>Vanish!</code></button>
                     </div>
                 </div>
-                
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Combat</h2>
                     <div>
@@ -245,7 +277,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Targeting</h2>
                     <div class="info-box">Usage Example: <code>.Knock [plr]</code> or <code>.Knock Ticxyy</code>. Works on display names and usernames.</div>
@@ -272,7 +303,6 @@
                         <button class="command" data-name=".Rm [user]" data-desc="Destroys the target's body." data-usage=".Rm [username]"><code>.Rm</code></button>
                     </div>
                 </div>
-
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Utility</h2>
                     <div>
@@ -319,7 +349,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Teleport</h2>
                     <div class="info-box">Example: <code>goto! bank</code>. Teleports the owner.</div>
@@ -328,11 +357,10 @@
                         bank, Roof, club, casino, ufo, mil, school, shop1, shop2, rev, db, pool, armor, subway, subway1, sewer, wheel, safe1, safe2, safe3, safe4, safe5, basketball, boxing, bull
                     </p>
                 </div>
-
                 <div class="command-card space-y-8 mb-8">
                     <h2 class="command-title">Misc</h2>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <button class="command" data-name="Ac!" data-desc="auto calls owner when owner equips phone" data-usage="Ac!"><code>Ac!</code></button>
+                        <button class="command" data-name="Ac!" data-desc="Auto calls owner when owner equips phone." data-usage="Ac!"><code>Ac!</code></button>
                         <button class="command" data-name="Rejoin! / rj!" data-desc="Rejoins the game." data-usage="Rejoin!"><code>Rejoin!</code></button>
                         <button class="command" data-name="Leave!" data-desc="Leaves the game." data-usage="Leave!"><code>Leave!</code></button>
                         <button class="command" data-name="Autosave!" data-desc="Saves you when knocked." data-usage="Autosave!"><code>Autosave!</code></button>
@@ -340,7 +368,7 @@
                         <button class="command" data-name="Heal!" data-desc="Heals the stand." data-usage="Heal!"><code>Heal!</code></button>
                         <button class="command" data-name="Song!" data-desc="Plays custom song from settings." data-usage="Song!"><code>Song!</code></button>
                         <button class="command" data-name="StopAudio!" data-desc="Stops music." data-usage="StopAudio!"><code>StopAudio!</code></button>
-                        <button class="command" data-name="Stop! / walk!" data-desc="makes stand walk." data-usage="Stop!"><code>Stop! / walk!</code></button>
+                        <button class="command" data-name="Stop! / walk!" data-desc="Makes stand walk." data-usage="Stop!"><code>Stop! / walk!</code></button>
                         <button class="command" data-name="Crew! / Uncrew!" data-desc="Joins/leaves the crew." data-usage="Crew!"><code>Crew!</code></button>
                         <button class="command" data-name="Moveset1 / 2" data-desc="Changes moveset (Default/Boxing)." data-usage="Moveset1"><code>Moveset1 / 2</code></button>
                         <button class="command" data-name="Weld!" data-desc="Makes stand invisible (may fail)." data-usage="Weld!"><code>Weld!</code></button>
@@ -362,14 +390,122 @@
                     </div>
                 </div>
             </div>
-
+            <div id="sniperbot-cmds" class="tab-content">
+                <div class="command-card space-y-8 mb-8">
+                    <h2 class="command-title">SniperBot Commands</h2>
+                    <div class="info-box">
+                        <p class="text-gray-300 mb-4">
+                            Use commas for multitargeting, e.g., <code>K! roblox,builderman</code> to knock both "roblox" and "builderman". Commands without a prefix are marked with (;). Most commands support single or multiple targets unless specified.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <button class="command" data-name="S;" data-desc="Summons the bot." data-usage="S;"><code>S;</code></button>
+                        <button class="command" data-name="V;" data-desc="Voids the bot." data-usage="V;"><code>V;</code></button>
+                        <button class="command" data-name="LowGFX!" data-desc="Enables low graphics mode." data-usage="LowGFX!"><code>LowGFX!</code></button>
+                        <button class="command" data-name="Stop!" data-desc="Stops the bot's current action." data-usage="Stop!"><code>Stop!</code></button>
+                        <button class="command" data-name="Bind!" data-desc="Enables antistomp." data-usage="Bind!"><code>Bind!</code></button>
+                        <button class="command" data-name="UnBind!" data-desc="Disables antistomp." data-usage="UnBind!"><code>UnBind!</code></button>
+                        <button class="command" data-name="Crew!" data-desc="Joins crew ID." data-usage="Crew!"><code>Crew!</code></button>
+                        <button class="command" data-name="UnCrew!" data-desc="Leaves current crew." data-usage="UnCrew!"><code>UnCrew!</code></button>
+                        <button class="command" data-name="ShowSc!" data-desc="Shows the screen." data-usage="ShowSc!"><code>ShowSc!</code></button>
+                        <button class="command" data-name="HideSc!" data-desc="Hides the screen to boost FPS." data-usage="HideSc!"><code>HideSc!</code></button>
+                        <button class="command" data-name="Rj!" data-desc="Rejoins the game." data-usage="Rj!"><code>Rj!</code></button>
+                        <button class="command" data-name="Leave!" data-desc="Leaves the game." data-usage="Leave!"><code>Leave!</code></button>
+                        <button class="command" data-name="Re!" data-desc="Resets the bot." data-usage="Re!"><code>Re!</code></button>
+                        <button class="command" data-name="Whitelist!" data-desc="Grants permission to target(s)." data-usage="Whitelist! [username1,username2]"><code>Whitelist!</code></button>
+                        <button class="command" data-name="UnWhitelist!" data-desc="Removes permission from target(s)." data-usage="UnWhitelist! [username1,username2]"><code>UnWhitelist!</code></button>
+                        <button class="command" data-name="ClearList!" data-desc="Clears the target list." data-usage="ClearList!"><code>ClearList!</code></button>
+                        <button class="command" data-name="ClearWhitelist!" data-desc="Clears the whitelist." data-usage="ClearWhitelist!"><code>ClearWhitelist!</code></button>
+                        <button class="command" data-name="Pred!" data-desc="Changes the current prediction value." data-usage="Pred!"><code>Pred!</code></button>
+                        <button class="command" data-name="Mult!" data-desc="Changes the current multiplier value." data-usage="Mult!"><code>Mult!</code></button>
+                        <button class="command" data-name="Db!" data-desc="Changes the double-barrel time." data-usage="Db!"><code>Db!</code></button>
+                        <button class="command" data-name="Time!" data-desc="Changes the voiding time for bring." data-usage="Time!"><code>Time!</code></button>
+                        <button class="command" data-name="K!" data-desc="Knocks target(s)." data-usage="K! [username1,username2]"><code>K!</code></button>
+                        <button class="command" data-name="S!" data-desc="Stomps target(s)." data-usage="S! [username1,username2]"><code>S!</code></button>
+                        <button class="command" data-name="A!" data-desc="Autokills target(s)." data-usage="A! [username1,username2]"><code>A!</code></button>
+                        <button class="command" data-name="B!" data-desc="Brings target (single only)." data-usage="B! [username]"><code>B!</code></button>
+                        <button class="command" data-name="Sentry!" data-desc="Enables SentryMode." data-usage="Sentry!"><code>Sentry!</code></button>
+                        <button class="command" data-name="UnSentry!" data-desc="Disables SentryMode." data-usage="UnSentry!"><code>UnSentry!</code></button>
+                        <button class="command" data-name="Fp!" data-desc="Enables fake position." data-usage="Fp!"><code>Fp!</code></button>
+                        <button class="command" data-name="UnFp!" data-desc="Disables fake position." data-usage="UnFp!"><code>UnFp!</code></button>
+                        <button class="command" data-name="Floss!" data-desc="Plays Floss animation." data-usage="Floss!"><code>Floss!</code></button>
+                        <button class="command" data-name="Inv!" data-desc="Plays Inv animation." data-usage="Inv!"><code>Inv!</code></button>
+                        <button class="command" data-name="Haunt!" data-desc="Plays Haunt animation." data-usage="Haunt!"><code>Haunt!</code></button>
+                        <button class="command" data-name="Float!" data-desc="Plays Float animation." data-usage="Float!"><code>Float!</code></button>
+                        <button class="command" data-name="Coin!" data-desc="Plays Coin animation." data-usage="Coin!"><code>Coin!</code></button>
+                        <button class="command" data-name="Zen!" data-desc="Plays Zen animation." data-usage="Zen!"><code>Zen!</code></button>
+                        <button class="command" data-name="Lay!" data-desc="Plays Lay animation." data-usage="Lay!"><code>Lay!</code></button>
+                        <button class="command" data-name="Beat!" data-desc="Plays Beat animation." data-usage="Beat!"><code>Beat!</code></button>
+                        <button class="command" data-name="Griddy!" data-desc="Plays Griddy animation." data-usage="Griddy!"><code>Griddy!</code></button>
+                        <button class="command" data-name="Custom!" data-desc="Plays Custom animation." data-usage="Custom!"><code>Custom!</code></button>
+                        <button class="command" data-name="StopAnim!" data-desc="Stops current animation." data-usage="StopAnim!"><code>StopAnim!</code></button>
+                    </div>
+                </div>
+            </div>
+            <div id="paid-commands" class="tab-content">
+                <div class="command-card space-y-8 mb-8">
+                    <h2 class="command-title">Paid Commands</h2>
+                    <div class="info-box">
+                        <p class="text-gray-300 mb-4">
+                            Paid commands use different prefixes depending on the system: GUI ($), Stand (!), or Sniper Bot (>). Use "." to target all users or specify a username/display name for a single user. Example: <code>$Bring .</code> brings all GUI users, while <code>$Bring xk</code> targets only "xk".
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4">XK5NG GUI Commands</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <button class="command" data-name="$Bring <User>" data-desc="Brings target(s) to you." data-usage="$Bring . or $Bring [username]"><code>$Bring</code></button>
+                            <button class="command" data-name="$Rejoin <User>" data-desc="Rejoins the game for target(s)." data-usage="$Rejoin . or $Rejoin [username]"><code>$Rejoin</code></button>
+                            <button class="command" data-name="$Freeze <User>" data-desc="Freezes target(s) in place." data-usage="$Freeze . or $Freeze [username]"><code>$Freeze</code></button>
+                            <button class="command" data-name="$Goofy <User>" data-desc="Plays laugh animation on loop for target(s)." data-usage="$Goofy . or $Goofy [username]"><code>$Goofy</code></button>
+                            <button class="command" data-name="$Stop <User>" data-desc="Stops the laugh animation for target(s)." data-usage="$Stop . or $Stop [username]"><code>$Stop</code></button>
+                            <button class="command" data-name="$Reset <User>" data-desc="Resets target(s)." data-usage="$Reset . or $Reset [username]"><code>$Reset</code></button>
+                            <button class="command" data-name="$Exit <User>" data-desc="Shuts down the game for target(s), returning to Roblox homepage." data-usage="$Exit . or $Exit [username]"><code>$Exit</code></button>
+                            <button class="command" data-name="$Crash <User>" data-desc="Freezes the game for target(s)." data-usage="$Crash . or $Crash [username]"><code>$Crash</code></button>
+                            <button class="command" data-name="$Ban <User>" data-desc="Fake bans target(s) with a kick and ban message." data-usage="$Ban . or $Ban [username]"><code>$Ban</code></button>
+                            <button class="command" data-name="$Say <User> {Text}" data-desc="Makes target(s) say specified text." data-usage="$Say [username] Hello"><code>$Say</code></button>
+                            <button class="command" data-name="$Dropcash <User>" data-desc="Makes target(s) drop cash." data-usage="$Dropcash . or $Dropcash [username]"><code>$Dropcash</code></button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4">Stand Commands</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <button class="command" data-name="!Bring <User>" data-desc="Brings target stand(s) to you." data-usage="!Bring . or !Bring [stand username]"><code>!Bring</code></button>
+                            <button class="command" data-name="!Kick <User>" data-desc="Kicks target stand(s)." data-usage="!Kick . or !Kick [stand username]"><code>!Kick</code></button>
+                            <button class="command" data-name="!Rejoin <User>" data-desc="Rejoins the game for target stand(s)." data-usage="!Rejoin . or !Rejoin [stand username]"><code>!Rejoin</code></button>
+                            <button class="command" data-name="!Crash <User>" data-desc="Crashes target stand(s)." data-usage="!Crash . or !Crash [stand username]"><code>!Crash</code></button>
+                            <button class="command" data-name="!Exit <User>" data-desc="Shuts down target stand(s), returning to Roblox homepage." data-usage="!Exit . or !Exit [stand username]"><code>!Exit</code></button>
+                            <button class="command" data-name="!Dropcash <User>" data-desc="Makes target stand(s) drop cash." data-usage="!Dropcash . or !Dropcash [stand username]"><code>!Dropcash</code></button>
+                            <button class="command" data-name="!Follow <User>" data-desc="Makes target stand(s) follow you." data-usage="!Follow . or !Follow [stand username]"><code>!Follow</code></button>
+                            <button class="command" data-name="!Unfollow <User>" data-desc="Makes target stand(s) stop following you." data-usage="!Unfollow . or !Unfollow [stand username]"><code>!Unfollow</code></button>
+                            <button class="command" data-name="!Ban <User>" data-desc="Fake bans target stand(s) with a kick and ban message." data-usage="!Ban . or !Ban [stand username]"><code>!Ban</code></button>
+                            <button class="command" data-name="!Reset <User>" data-desc="Resets target stand(s)." data-usage="!Reset . or !Reset [stand username]"><code>!Reset</code></button>
+                            <button class="command" data-name="!Dance <User>" data-desc="Makes target stand(s) dance." data-usage="!Dance . or !Dance [stand username]"><code>!Dance</code></button>
+                            <button class="command" data-name="!Say <User> {Text}" data-desc="Makes target stand(s) say specified text." data-usage="!Say [stand username] Hello"><code>!Say</code></button>
+                            <button class="command" data-name="!Betray <User>" data-desc="Makes target stand(s) kill their owner (shield bypass)." data-usage="!Betray . or !Betray [stand username]"><code>!Betray</code></button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4">Sniper Bot Commands</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <button class="command" data-name=">Kick <User>" data-desc="Kicks target bot(s)." data-usage=">Kick . or >Kick [bot username]"><code>>Kick</code></button>
+                            <button class="command" data-name=">Bring <User>" data-desc="Brings target bot(s) to you." data-usage=">Bring . or >Bring [bot username]"><code>>Bring</code></button>
+                            <button class="command" data-name=">Rejoin <User>" data-desc="Rejoins the game for target bot(s)." data-usage=">Rejoin . or >Rejoin [bot username]"><code>>Rejoin</code></button>
+                            <button class="command" data-name=">Crash <User>" data-desc="Crashes target bot(s)." data-usage=">Crash . or >Crash [bot username]"><code>>Crash</code></button>
+                            <button class="command" data-name=">Exit <User>" data-desc="Shuts down target bot(s), returning to Roblox homepage." data-usage=">Exit . or >Exit [bot username]"><code>>Exit</code></button>
+                            <button class="command" data-name=">Dropcash <User>" data-desc="Makes target bot(s) drop cash." data-usage=">Dropcash . or >Dropcash [bot username]"><code>>Dropcash</code></button>
+                            <button class="command" data-name=">Reset <User>" data-desc="Resets target bot(s)." data-usage=">Reset . or >Reset [bot username]"><code>Reset</code></button>
+                            <button class="command" data-name=">Ban <User>" data-desc="Fake bans target bot(s) with a kick and ban message." data-usage=">Ban . or >Ban [bot username]"><code>>Ban</code></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="phowgs-stuff" class="tab-content">
                 <div class="command-card space-y-4">
-                    <h2 class="command-title">scripts?</h2>
+                    <h2 class="command-title">Scripts</h2>
                     <div class="info-box">
                         <h3 class="font-semibold text-lg mb-2">Auto Lettuce Script</h3>
                         <p class="text-gray-300 mb-4">
-                            autofarm script execute it, and it will teleport u to a safe place wait about 2-5 minutes and u will be fully skinny this is useful for fixing the autofarm getting stuck at lmg spot if u do use it, otherwise u can just use auto skinny in general.
+                            a simple auto lettuce script made by x67b it can be useful for fixing stando autofarm getting stuck at lmg spot and also in any other way, it should take about 2-5 minutes to finish depending on ur muscle level currently.
                         </p>
                         <div class="script-code">
                             <code id="auto-lettuce-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/phowg-host/auto_lettuce.lua/refs/heads/main/%40x67bondc"))()</code>
@@ -382,7 +518,6 @@
             </div>
         </main>
     </div>
-
     <div id="commandModal" class="fixed inset-0 z-50 items-center justify-center hidden" style="background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px);">
         <div class="modal-content relative w-full max-w-md p-6 rounded-lg m-4">
             <h3 id="modal-title" class="text-2xl font-bold text-pink-400 font-orbitron"></h3>
@@ -394,49 +529,38 @@
             <button id="modal-close" class="absolute -top-2 -right-2 text-2xl font-bold text-black bg-pink-400 rounded-full h-8 w-8 flex items-center justify-center hover:bg-pink-500 transition">&times;</button>
         </div>
     </div>
-
     <script>
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
-
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
-
         let time = 0;
         const colors = [
-            [26, 9, 42],   // --bg-dark-purple: #1a092a
-            [59, 7, 100],  // --bg-light-purple: #3b0764
-            [42, 17, 66],  // --card-purple: #2a1142
-            [76, 29, 149]  // --border-purple: #4c1d95
+            [26, 9, 42], 
+            [59, 7, 100],
+            [42, 17, 66], 
+            [76, 29, 149] 
         ];
-
         function interpolateColor(color1, color2, factor) {
             return color1.map((start, i) => Math.round(start + (color2[i] - start) * factor));
         }
-
         function drawGradient() {
             const t = (Math.sin(time * 0.05) + 1) / 2;
             const color1 = interpolateColor(colors[0], colors[1], t);
             const color2 = interpolateColor(colors[2], colors[3], t);
-
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             gradient.addColorStop(0, `rgb(${color1[0]}, ${color1[1]}, ${color1[2]})`);
             gradient.addColorStop(1, `rgb(${color2[0]}, ${color2[1]}, ${color2[2]})`);
-
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             time++;
             requestAnimationFrame(drawGradient);
         }
-
         drawGradient();
-
         document.addEventListener('DOMContentLoaded', () => {
             const tabs = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -446,14 +570,18 @@
             const modalDesc = document.getElementById('modal-desc');
             const modalUsage = document.getElementById('modal-usage');
             const modalClose = document.getElementById('modal-close');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 1000);
 
             const switchTab = (targetTab) => {
                 tabs.forEach(t => t.classList.remove('active'));
                 tabContents.forEach(tc => tc.classList.remove('active'));
-                
-                const activeTabButton = document.querySelector(`.tab-button[data-tab='${targetTab}']`);
+                const activeTabButton = document.querySelector(`.tab-button[data-tab="${targetTab}"]`);
                 const activeTabContent = document.getElementById(targetTab);
-                
                 if (activeTabButton) activeTabButton.classList.add('active');
                 if (activeTabContent) activeTabContent.classList.add('active');
             };
@@ -474,7 +602,7 @@
                     modal.classList.add('flex');
                 });
             });
-            
+
             const closeModal = () => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
@@ -486,13 +614,14 @@
                     closeModal();
                 }
             });
+
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
                     closeModal();
                 }
             });
-            
-            switchTab('commands');
+
+            switchTab('stand-cmds');
         });
     </script>
 </body>
